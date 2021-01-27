@@ -147,6 +147,10 @@ return [
     */
 
     'attributes' => [
+        'vacinationplace' => 'local de vacinação',
+        'form' => 'formulário',
+        'forms' => 'formulários',
+        'publicplace' => 'logradouro',
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',

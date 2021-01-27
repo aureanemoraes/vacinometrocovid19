@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FormRequest extends LaravelFormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,14 +26,7 @@ class FormRequest extends LaravelFormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|string|max:255',
-            'age' => 'required|min:1|max:3|string',
-            'publicplace' => 'required',
-            //'number' => 'required|min:1|string|max:6',
-            //'neighborhood' => 'required|min:3|string|max:255',
-            'prioritygroup' => 'required|min:5|string|max:255',
-            'gender' => 'required|min:3|string|max:255',
-            'vacinationplace_id' => 'required',
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

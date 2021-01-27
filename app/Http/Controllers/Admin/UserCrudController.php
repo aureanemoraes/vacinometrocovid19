@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\VacinationPlaceRequest;
+use App\Http\Requests\UserRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class VacinationPlaceCrudController
+ * Class UserCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class VacinationPlaceCrudController extends CrudController
+class UserCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -27,9 +26,9 @@ class VacinationPlaceCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\VacinationPlace::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/vacinationplace');
-        CRUD::setEntityNameStrings('vacinationplace', 'Locais de vacinação');
+        CRUD::setModel(\App\Models\User::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
+        CRUD::setEntityNameStrings('user', 'users');
     }
 
     /**
@@ -40,17 +39,20 @@ class VacinationPlaceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // columns
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'email', 'type' => 'email', 'label' => 'E-mail']);
+        CRUD::addColumn(['name' => 'activeted', 'type' => 'boolean', 'label' => 'Ativado']);
+
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
+         * CRUD::column('name');
+        CRUD::column('email');
+        CRUD::column('activeted');
          */
-        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-        //CRUD::addColumn(['name' => 'forms', 'type' => 'entity', 'label' => 'Formulários']);
-
-
     }
 
     /**
@@ -61,27 +63,25 @@ class VacinationPlaceCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(VacinationPlaceRequest::class);
+        CRUD::setValidation(UserRequest::class);
+
+        CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addField(['name' => 'email', 'type' => 'text', 'label' => 'E-mail']);
+        CRUD::addField(['name' => 'activeted', 'type' => 'boolean', 'label' => 'Ativado']);
+
+
 
         /**
+         * CRUD::field('name');
+        CRUD::field('email');
+        CRUD::field('is_admin');
+        CRUD::field('is_manager');
+        CRUD::field('activeted');
+        CRUD::field('remember_token');
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
-
-        CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-/*
-        CRUD::addField([
-            'type' => "relationship",
-            'name' => 'Forms', // the method on your model that defines the relationship
-            'ajax' => true,
-            'inline_create' => [ // specify the entity in singular
-                'entity' => 'form', // the entity in singular
-                // OPTIONALS
-                'force_select' => true, // should the inline-created entry be immediately selected?
-                'modal_class' => 'modal-dialog modal-xl', // use modal-sm, modal-lg to change width
-            ]
-        ]);*/
     }
 
     /**

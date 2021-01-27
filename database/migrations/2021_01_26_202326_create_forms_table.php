@@ -17,14 +17,13 @@ class CreateFormsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('age');
-            $table->string('public_place');
+            $table->string('publicplace');
             $table->string('number');
             $table->string('neighborhood');
-            //$table->unsignedBigInteger('vacination_place_id');
-            //$table->foreign('vacination_place_id')->references('id')->on('vacination_places');
-            $table->string('vacination_place');
-
-            $table->string('priority_group');
+            $table->unsignedBigInteger('vacinationplace_id');
+            $table->foreign('vacinationplace_id')->references('id')->on('vacination_places');
+            //$table->string('vacination_place');
+            $table->string('prioritygroup');
             $table->string('gender');
             $table->timestamps();
         });

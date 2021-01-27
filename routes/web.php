@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Exports\FormExport;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $forms = \App\Models\Form::all();
+    return view('vaccinated_index')->with('forms', $forms);
+});
+
+Route::post('/exportcsv', function (Request $request) {
+    $initialDate = $request->input('initial_date');
+    $finalDate = $request->input('final_date');
+    return (new FormExport($initialDate, $finalDate))->download('vacinometrocovid19_'.$initialDate.'_to_'.$finalDate.'.csv');
 });

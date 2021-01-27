@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\FormExport;
 use App\Http\Requests\FormRequest;
+use App\Models\VacinationPlace;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
@@ -15,8 +16,10 @@ use Illuminate\Http\Request;
  */
 class FormCrudController extends CrudController
 {
+    use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -26,11 +29,23 @@ class FormCrudController extends CrudController
      *
      * @return void
      */
+
+
+
+
     public function setup()
     {
         CRUD::setModel(\App\Models\Form::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/form');
-        CRUD::setEntityNameStrings('form', 'forms');
+        CRUD::setEntityNameStrings('form', 'Formulário');
+    }
+
+    public function fetchVacinationPlace()
+    {
+        return $this->fetch([
+            'model' => \App\Models\VacinationPlace::class, // required
+            'searchable_attributes' => ['name']
+        ]);
     }
 
     /**
@@ -72,7 +87,7 @@ class FormCrudController extends CrudController
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addField(['name' => 'age', 'type' => 'text', 'label' => 'Idade']);
         CRUD::addField([
-            'name' => 'priority_group',
+            'name' => 'prioritygroup',
             'type' => 'select2_from_array',
             'options' => [
                 'Trabalhadores da área de saúde' => 'Trabalhadores da área de saúde',
@@ -108,7 +123,7 @@ class FormCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name'          => 'public_place',
+            'name'          => 'publicplace',
             'label'         => 'Endereço',
             'type'          => 'address_algolia',
             // optional
@@ -122,9 +137,19 @@ class FormCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name'          => 'vacination_place',
-            'label'         => 'Lugar de vacinação',
-            'type'          => 'text'
+            'type' => "relationship",
+            'label' => 'Local de vacinação',
+            'name' => 'vacinationplace_id', // the method on your model that defines the relationship,
+            'data_source' =>  route('form.fetchVacinationPlace'),
+            'ajax' => true,
+            'inline_create' => [ // specify the entity in singular
+                'modal_route' => route('vacinationplace-inline-create'), // InlineCreate::getInlineCreateModal()
+                'create_route' =>  route('vacinationplace-inline-create-save'),
+                'entity' => 'vacinationplace', // the entity in singular
+                // OPTIONALS
+                'force_select' => true, // should the inline-created entry be immediately selected?
+                'modal_class' => 'modal-dialog modal-xl', // use modal-sm, modal-lg to change width
+            ],
         ]);
 
 
@@ -140,6 +165,9 @@ class FormCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+/*
+
+    }*/
 
     public function exportView()
     {
@@ -150,7 +178,7 @@ class FormCrudController extends CrudController
     {
         $a = $request->input('initial_date');
         $b = $request->input('final_date');
-        return (new FormExport($a, $b))->download('invoices.xlsx');
+        return (new FormExport($a, $b))->download('vacinometrocovid19_'.$a.'_to_'.$b.'.csv');
         return view("crud::export");
     }
 }

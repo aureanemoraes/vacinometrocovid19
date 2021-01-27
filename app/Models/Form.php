@@ -22,12 +22,12 @@ class Form extends Model
     protected $fillable = [
         'name',
         'age',
-        'public_place',
+        'publicplace',
         'number',
         'neighborhood',
-        'vacination_place',
-        'priority_group',
-        'gender'
+        'vacinationplace_id',
+        'prioritygroup',
+        'gender',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -41,8 +41,8 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
-            $address = json_decode($form['public_place']);
-            $form->public_place = $address->name;
+            $address = json_decode($form['publicplace']);
+            $form->publicplace = $address->name;
             $form->neighborhood = $address->suburb;
             //$form->neighborhood = $form->public_place->suburb;
         });
@@ -53,9 +53,9 @@ class Form extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    //public function vacination_place() {
-    //    return $this->belongsTo(VacinationPlace::class);
-    //}
+    public function vacinationplace() {
+        return $this->belongsTo(VacinationPlace::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

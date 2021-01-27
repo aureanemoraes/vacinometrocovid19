@@ -15,7 +15,11 @@ Route::group([
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
     Route::crud('vacinationplace', 'VacinationPlaceCrudController');
+
     Route::crud('form', 'FormCrudController');
     Route::get('form/export', 'FormCrudController@exportView');
     Route::post('form/export', 'FormCrudController@export');
+    //Route::post('form/fetch/vacinationplace', 'FormCrudController@fetchVacinationPlace');
+
+    Route::crud('user', 'UserCrudController');
 }); // this should be the absolute last line of this file

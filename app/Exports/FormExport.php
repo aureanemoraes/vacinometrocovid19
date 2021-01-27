@@ -6,8 +6,11 @@ use App\Models\Form;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class FormExport implements FromQuery
+
+class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
 {
     use Exportable;
 
@@ -16,6 +19,32 @@ class FormExport implements FromQuery
         $this->initialDate = Carbon::parse($initialDate);
         $this->finalDate = Carbon::parse($finalDate);
 
+    }
+
+
+    public function getCsvSettings(): array
+    {
+        return [
+            'delimiter' => ';',
+            'use_bom' => true
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            '#',
+            'Nome',
+            'Idade',
+            'Logradouro',
+            'Número',
+            'Bairro',
+            'Lugar de vacinação',
+            'Grupo prioritário',
+            'Gênero',
+            'Criado em',
+            'Atualizado em'
+        ];
     }
 
     public function query()
