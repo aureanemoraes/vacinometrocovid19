@@ -24,6 +24,7 @@ class UserCrudController extends CrudController
      *
      * @return void
      */
+
     public function setup()
     {
         CRUD::setModel(\App\Models\User::class);
