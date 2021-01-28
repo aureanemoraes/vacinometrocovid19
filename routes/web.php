@@ -16,9 +16,10 @@ use App\Exports\FormExport;
 |
 */
 
-Route::get('/', function () {
-    $forms = \App\Models\Form::all();
-    return view('vaccinated_index')->with('forms', $forms);
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index']);
+
+Route::get('/noaccess', function () {
+    return view('no_access');
 });
 
 Route::post('/exportcsv', function (Request $request) {

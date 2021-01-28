@@ -8,45 +8,70 @@
     <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 
-    <title>Document</title>
+    <title>VacinômetroCOVID19</title>
 </head>
 <body>
     <div class="container ">
         <h1>Vacinômetro COVID19</h1>
-        <div class="table-responsive">
-            <table class="table display" id="index_table">
-                <thead>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4"><strong class="text-success">837384</strong> pessoas foram vacinadas em Macapá/AP!</h1>
+                <p class="lead">Última atualização em: xx/xx/xxx</p>
+                <hr class="my-4">
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="c-callout c-callout-info">
+                            <small class="text-muted">USB Congós</small><br>
+                            <strong class="h4">20 </strong>imunizados!
+                        </div>
+                    </div><!--/.col-->
+                    <div class="col-sm-2">
+                        <div class="c-callout c-callout-danger">
+                            <small class="text-muted">Centro de imunização</small><br>
+                            <strong class="h4">300 </strong>imunizados!
+                        </div>
+                    </div><!--/.col-->
+                    <div class="col-sm-2">
+                        <div class="c-callout c-callout-warning">
+                            <small class="text-muted">Centro do COVID19</small><br>
+                            <strong class="h4">200 </strong>imunizados!
+                        </div>
+                    </div><!--/.col-->
+                </div><!--/.row-->
+            </div>
+        </div>
+
+        <div>
+            <h4>Lista de vacinados</h4>
+            <div class="table-responsive">
+                <table class="table display" id="index_table">
+                    <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">Idade</th>
-                        <th scope="col">Endereço</th>
                         <th scope="col">Lugar de vacinação</th>
                         <th scope="col">Grupo prioritário</th>
-                        <th scope="col">Gênero</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach($forms as $form)
                         <tr>
                             <td>{{$form->id}}</td>
                             <td>{{$form->name}}</td>
-                            <td>{{$form->age}}</td>
-
-                            <td>{{$form->publicplace}}, {{$form->number}}, {{$form->neighborhood}}</td>
                             <td>{{$form->vacinationplace->name}}</td>
                             <td>{{$form->prioritygroup}}</td>
-                            <td>{{$form->gender}}</td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
 
+            </div>
         </div>
 
         <div align="center">
-
             <form action="/exportcsv" method="POST">
                 <div class="row">
                     <div class="col">
