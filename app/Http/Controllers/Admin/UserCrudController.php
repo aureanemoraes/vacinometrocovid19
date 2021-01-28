@@ -27,6 +27,13 @@ class UserCrudController extends CrudController
 
     public function setup()
     {
+        
+        $user = backpack_user();
+        if (!$user->hasRole('admin')) {
+            $this->crud->denyAccess('list', 'create');
+        }
+        
+
         CRUD::setModel(\App\Models\User::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
         CRUD::setEntityNameStrings('user', 'users');
@@ -40,6 +47,7 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'email', 'type' => 'email', 'label' => 'E-mail']);
         CRUD::addColumn(['name' => 'activeted', 'type' => 'boolean', 'label' => 'Ativado']);

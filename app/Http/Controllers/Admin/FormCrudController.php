@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\FormExport;
+use App\Imports\FormImport;
 use App\Http\Requests\FormRequest;
 use App\Models\VacinationPlace;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -48,6 +49,14 @@ class FormCrudController extends CrudController
         ]);
     }
 
+    public function fetchPriorityGroup()
+    {
+        return $this->fetch([
+            'model' => \App\Models\PriorityGroup::class, // required
+            'searchable_attributes' => ['name']
+        ]);
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -62,8 +71,9 @@ class FormCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-        CRUD::addColumn(['name' => 'priority_group', 'type' => 'text', 'label' => 'Grupo prioritário']);
+        CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
+        $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
 
 
     }
@@ -87,53 +97,19 @@ class FormCrudController extends CrudController
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addField(['name' => 'age', 'type' => 'text', 'label' => 'Idade']);
         CRUD::addField([
-            'name' => 'prioritygroup',
-            'type' => 'select2_from_array',
-            'options' => [
-                'Trabalhadores da área de saúde' => 'Trabalhadores da área de saúde',
-                'Idosos (acima de 60 anos)' => 'Idosos (acima de 60 anos)',
-                'Indígenas' => 'Indígenas',
-                'Pessoas com comorbidades' => 'Pessoas com comorbidades',
-                'Professores (do nível básico ao superior)' => 'Professores (do nível básico ao superior)',
-                'Comunidades tradicionais ribeirinhas' => 'Quilombolas',
-                'Trabalhadores do transporte coletivo' => 'Trabalhadores do transporte coletivo',
-                'Pessoas em situação de rua' => 'Pessoas em situação de rua',
-                'População privada de liberdade' => 'População privada de liberdade'
-            ],
-            'allows_null' => false,
+            'type' => "relationship",
             'label' => 'Grupo prioritário',
-            'attributes' => [
-                'placeholder' => 'Selecione...'
-            ]
-        ]);
-
-        CRUD::addField([
-            'name' => 'gender',
-            'type' => 'select2_from_array',
-            'options' => [
-                'Feminino' => 'Feminino',
-                'Masculino' => 'Masculino',
-                'Outros' => 'Outros'
+            'name' => 'prioritygroup_id', // the method on your model that defines the relationship,
+            'data_source' =>  route('form.fetchPriorityGroup'),
+            'ajax' => true,
+            'inline_create' => [ // specify the entity in singular
+                'modal_route' => route('prioritygroup-inline-create'), // InlineCreate::getInlineCreateModal()
+                'create_route' =>  route('prioritygroup-inline-create-save'),
+                'entity' => 'prioritygroup', // the entity in singular
+                // OPTIONALS
+                'force_select' => true, // should the inline-created entry be immediately selected?
+                'modal_class' => 'modal-dialog modal-xl', // use modal-sm, modal-lg to change width
             ],
-            'allows_null' => false,
-            'label' => 'Gênero',
-            'attributes' => [
-                'placeholder' => 'Selecione...'
-            ]
-        ]);
-
-        CRUD::addField([
-            'name'          => 'publicplace',
-            'label'         => 'Endereço',
-            'type'          => 'address_algolia',
-            // optional
-            'store_as_json' => true
-        ]);
-
-        CRUD::addField([
-            'name'          => 'number',
-            'label'         => 'Número',
-            'type'          => 'text',
         ]);
 
         CRUD::addField([
@@ -178,7 +154,28 @@ class FormCrudController extends CrudController
     {
         $a = $request->input('initial_date');
         $b = $request->input('final_date');
+
         return (new FormExport($a, $b))->download('vacinometrocovid19_'.$a.'_to_'.$b.'.csv');
         return view("crud::export");
+    }
+
+    public function importView()
+    {
+        return view("crud::import");
+    }
+
+    public function import(Request $request)
+    {
+        /*
+        $a = $request->input('initial_date');
+        $b = $request->input('final_date');
+        return (new FormExport($a, $b))->download('vacinometrocovid19_'.$a.'_to_'.$b.'.csv');
+        return view("crud::export");"
+        */
+        if($request->hasFile('file')) {
+            (new FormImport)->import($request->file('file'));
+        }
+        return redirect()->route('form.index');
+
     }
 }

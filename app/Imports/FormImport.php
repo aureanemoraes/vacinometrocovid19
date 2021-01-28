@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\Form;
 use Maatwebsite\Excel\Concerns\ToModel;
-//use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithUpserts;
@@ -13,9 +13,9 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
-class CityImport implements ToModel, WithHeadingRow, WithBatchInserts, WithUpserts, WithChunkReading, ShouldQueue,WithCustomCsvSettings
+class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
 {
-    //use Importable;
+    use Importable;
 
     public function getCsvSettings(): array
     {
@@ -25,37 +25,24 @@ class CityImport implements ToModel, WithHeadingRow, WithBatchInserts, WithUpser
         ];
     }
 
+
     public function model(array $row)
     {
+       // dd($row);
+/*
+        if($row['id']) {
+            return null;
+        }
+*/
+
         return new Form([
             'name' => $row['nome'],
             'age' => $row['idade'],
-            'prioritarygroup' => $row['grupo_prioritario'],
-            'vacinationplace' => $row['observacoes']
+            'prioritygroup_id' => $row['grupo_prioritario'],
+            'vacinationplace_id' => $row['unidade_de_saude']
         ]);
 
 
     }
-
-
-
-    // BachInsert
-    public function batchSize(): int
-    {
-        return 1;
-    }
-
-    // WithUpsert
-    public function uniqueBy()
-    {
-        return '*';
-    }
-
-    // Chunk Reading
-    public function chunkSize(): int
-    {
-        return 500;
-    }
-
 
 }

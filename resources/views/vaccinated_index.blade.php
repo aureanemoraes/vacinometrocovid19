@@ -1,52 +1,72 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
 
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'VacinômetroCOVID19')
+
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+@endsection
+
+@section('main')
+    @if(isset($vacinationplaces) && count($forms) > 0)
     <div class="container ">
         <h1>Vacinômetro COVID19</h1>
-        <div class="table-responsive">
-            <table class="table display" id="index_table">
-                <thead>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4"><strong class="text-success">{{$forms->count()}}</strong> pessoas foram vacinadas em Macapá/AP!</h1>
+                <p class="lead">Última atualização em: {{date_format($forms->last()->created_at, 'd/m/Y H:i')}}</p>
+                <hr class="my-4">
+
+                <div class="row">
+                    @php
+                        $colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+                        $i=0;
+                    @endphp
+                    @foreach($vacinationplaces as $vacinationplace)
+                        <div class="col-sm-2">
+                            <div class="c-callout c-callout-{{$colors[$i]}}">
+                                <small class="text-muted">{{$vacinationplace->name}}</small><br>
+                                <strong class="h4">{{$vacinationplace->forms_count}} </strong>imunizados!
+                            </div>
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h4>Lista de vacinados</h4>
+            <div class="table-responsive">
+                <table class="table display" id="index_table">
+                    <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
-                        <th scope="col">Idade</th>
-                        <th scope="col">Endereço</th>
                         <th scope="col">Lugar de vacinação</th>
                         <th scope="col">Grupo prioritário</th>
-                        <th scope="col">Gênero</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     @foreach($forms as $form)
                         <tr>
                             <td>{{$form->id}}</td>
                             <td>{{$form->name}}</td>
-                            <td>{{$form->age}}</td>
-
-                            <td>{{$form->publicplace}}, {{$form->number}}, {{$form->neighborhood}}</td>
                             <td>{{$form->vacinationplace->name}}</td>
-                            <td>{{$form->prioritygroup}}</td>
-                            <td>{{$form->gender}}</td>
+                            <td>{{$form->prioritygroup->name}}</td>
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
 
+            </div>
         </div>
 
         <div align="center">
-
             <form action="/exportcsv" method="POST">
                 <div class="row">
                     <div class="col">
@@ -63,29 +83,67 @@
                     </div>
                 </div>
 
+                <div class="row" align="left">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="csv_virgula" id="export_type" name="export_type">
+                            <label class="form-check-label" for="export_type">
+                                .CSV (separado por vírgula)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="csv_ponto_virgula" id="export_type" name="export_type">
+                            <label class="form-check-label" for="export_type">
+                                .CSV (separado por ponto e vírgula)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="xlsx" id="export_type" name="export_type">
+                            <label class="form-check-label" for="export_type">
+                                .XLSX
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" value="pdf" id="export_type" name="export_type">
+                            <label class="form-check-label" for="export_type">
+                                .PDF
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Exportar</button>
             </form>
 
 
         </div>
     </div>
-</body>
+    @else
+    <p>Ainda não há dados para serem exibidos.</p>
+    @endif
+@endsection
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
-<script>
-    $(document).ready( function () {
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready( function () {
 
-        $('#index_table').DataTable({
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
-            }
-        });
-    } );
-</script>
-</html>
+            $('#index_table').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
+                }
+            });
+        } );
+    </script>
+@endsection
 
+
+
+    
 
 

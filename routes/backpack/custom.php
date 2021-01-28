@@ -20,7 +20,10 @@ Route::group([
     Route::crud('form', 'FormCrudController');
     Route::get('form/export', 'FormCrudController@exportView');
     Route::post('form/export', 'FormCrudController@export');
+    Route::get('form/import', 'FormCrudController@importView');
+    Route::post('form/import', 'FormCrudController@import');
     //Route::post('form/fetch/vacinationplace', 'FormCrudController@fetchVacinationPlace');
 
     Route::crud('user', 'UserCrudController');
+    Route::crud('prioritygroup', 'PriorityGroupCrudController');
 }); // this should be the absolute last line of this file

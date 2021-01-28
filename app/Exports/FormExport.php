@@ -14,10 +14,11 @@ class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
 {
     use Exportable;
 
-    public function __construct($initialDate, $finalDate)
+    public function __construct($initialDate, $finalDate, $delimiter = ',')
     {
         $this->initialDate = Carbon::parse($initialDate);
         $this->finalDate = Carbon::parse($finalDate);
+        $this->delimiter = $delimiter;
 
     }
 
@@ -25,7 +26,7 @@ class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
     public function getCsvSettings(): array
     {
         return [
-            'delimiter' => ';',
+            'delimiter' => $this->delimiter,
             'use_bom' => true
         ];
     }
@@ -36,12 +37,8 @@ class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
             '#',
             'Nome',
             'Idade',
-            'Logradouro',
-            'Número',
-            'Bairro',
             'Lugar de vacinação',
             'Grupo prioritário',
-            'Gênero',
             'Criado em',
             'Atualizado em'
         ];

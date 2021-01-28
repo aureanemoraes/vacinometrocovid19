@@ -122,11 +122,16 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/php-enum" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maennchen/zipstream-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/maatwebsite/excel" />
+<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-foundation" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/http-client-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/event-dispatcher-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/psr/log" />
+=======
+      <excludeFolder url="file://$MODULE_DIR$/vendor/backpack/permissionmanager" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
+>>>>>>> 2455e8d11f068d50601f93cec566da674bd46f00
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

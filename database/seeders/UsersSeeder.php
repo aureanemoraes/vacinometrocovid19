@@ -19,8 +19,6 @@ class UsersSeeder extends Seeder
             'name' => 'Gestão - Prefeitura de Macapá',
             'email' => 'ti.prefeituramacapa@gmail.com',
             'password' => Hash::make('123456'),
-            'is_admin' => 1,
-            'is_manager' => 1,
             'activeted' => 1
         ]);
     }

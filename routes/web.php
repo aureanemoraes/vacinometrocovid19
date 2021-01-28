@@ -16,13 +16,25 @@ use App\Exports\FormExport;
 |
 */
 
-Route::get('/', function () {
-    $forms = \App\Models\Form::all();
-    return view('vaccinated_index')->with('forms', $forms);
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index']);
+
+Route::get('/noaccess', function () {
+    return view('no_access');
 });
 
 Route::post('/exportcsv', function (Request $request) {
-    $initialDate = $request->input('initial_date');
-    $finalDate = $request->input('final_date');
-    return (new FormExport($initialDate, $finalDate))->download('vacinometrocovid19_'.$initialDate.'_to_'.$finalDate.'.csv');
+    $initial_date = $request->input('initial_date');
+    $final_date = $request->input('final_date');
+    $export_type = $request->input('export_type');
+        switch($export_type) {
+            case 'csv_virgula':
+                return (new FormExport($initial_date, $final_date, ','))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+                break;
+            case 'csv_ponto_virgula':
+                return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+                break;
+            case 'xlsx':
+                return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.xlsx');
+                break;
+        }
 });

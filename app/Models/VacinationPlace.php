@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Form;
 
 class VacinationPlace extends Model
 {
@@ -35,7 +36,7 @@ class VacinationPlace extends Model
     |--------------------------------------------------------------------------
     */
     public function forms() {
-        return $this->hasMany(Form::class);
+        return $this->hasMany(Form::class, 'vacinationplace_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +49,12 @@ class VacinationPlace extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
+    /*
+    public function formsCount()
+    {
+        return count($this->forms);
+    }
+*/
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

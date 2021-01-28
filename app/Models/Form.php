@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\VacinationPlace;
+use App\Models\PriorityGroup;
+
 
 class Form extends Model
 {
@@ -22,12 +25,8 @@ class Form extends Model
     protected $fillable = [
         'name',
         'age',
-        'publicplace',
-        'number',
-        'neighborhood',
         'vacinationplace_id',
-        'prioritygroup',
-        'gender',
+        'prioritygroup_id',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -41,10 +40,30 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
-            $address = json_decode($form['publicplace']);
-            $form->publicplace = $address->name;
-            $form->neighborhood = $address->suburb;
-            //$form->neighborhood = $form->public_place->suburb;
+            // EXPORT
+            
+            $vacinationplace = VacinationPlace::where('name', $form['vacinationplace_id'])->first();
+            if(isset($vacinationplace->id)) {
+                $form->vacinationplace_id = $vacinationplace->id;
+            } else {
+                $newvacinationplace = VacinationPlace::create([
+                    'name' => $form['vacinationplace_id']
+                ]);
+                $form->vacinationplace_id = $newvacinationplace->id;
+            }
+
+            $prioritygroup = Prioritygroup::where('name', $form['prioritygroup_id'])->first();
+            if(isset($prioritygroup->id)) {
+                $form->prioritygroup_id = $prioritygroup->id;
+            } else {
+                $newprioritygroup = Prioritygroup::create([
+                    'name' => $form['prioritygroup_id']
+                ]);
+                $form->prioritygroup_id = $newprioritygroup->id;
+            }
+            // EXPORT
+
+        
         });
     }
 
@@ -54,7 +73,11 @@ class Form extends Model
     |--------------------------------------------------------------------------
     */
     public function vacinationplace() {
-        return $this->belongsTo(VacinationPlace::class);
+        return $this->belongsTo(VacinationPlace::class, 'vacinationplace_id', 'id');
+    }
+
+    public function prioritygroup() {
+        return $this->belongsTo(Prioritygroup::class, 'prioritygroup_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------
