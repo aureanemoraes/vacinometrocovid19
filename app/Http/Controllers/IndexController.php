@@ -6,87 +6,45 @@ use App\Models\Form;
 use App\Models\VacinationPlace;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Exports\FormExport;
+use PDF;
 
 class IndexController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $forms = Form::all();
         $vacinationplaces = VacinationPlace::withCount('forms')->get();
-    
+
         return view('vaccinated_index')
             ->with('forms', $forms)
             ->with('vacinationplaces', $vacinationplaces);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Form  $form
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Form $form)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Form  $form
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Form $form)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Form  $form
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Form $form)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Form  $form
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Form $form)
-    {
-        //
-    }
+   public function export(Request $request) {
+       $initial_date = $request->input('initial_date');
+       $final_date = $request->input('final_date');
+       $export_type = $request->input('export_type');
+       switch($export_type) {
+           case 'csv_virgula':
+               return (new FormExport($initial_date, $final_date, ','))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+               break;
+           case 'csv_ponto_virgula':
+               return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+               break;
+           case 'xlsx':
+               return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.xlsx');
+               break;
+           case 'pdf':
+               $initial_date_formatted = Carbon::parse($initial_date);
+               $final_date_formatted = Carbon::parse($final_date);
+               //$immunizeds = Form::whereBetween('created_at', [$initial_date_formatted, $final_date_formatted])->get();
+                $immunizeds = Form::all();
+               $pdf = PDF::loadView('import', compact('immunizeds'));
+               return $pdf->download('import.pdf');
+               break;
+       }
+   }
 }

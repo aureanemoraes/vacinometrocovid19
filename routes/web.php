@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Exports\FormExport;
+
 
 
 /*
@@ -22,19 +22,6 @@ Route::get('/noaccess', function () {
     return view('no_access');
 });
 
-Route::post('/exportcsv', function (Request $request) {
-    $initial_date = $request->input('initial_date');
-    $final_date = $request->input('final_date');
-    $export_type = $request->input('export_type');
-        switch($export_type) {
-            case 'csv_virgula':
-                return (new FormExport($initial_date, $final_date, ','))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
-                break;
-            case 'csv_ponto_virgula':
-                return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
-                break;
-            case 'xlsx':
-                return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.xlsx');
-                break;
-        }
-});
+Route::post('/exportcsv', [\App\Http\Controllers\IndexController::class, 'export']);
+
+
