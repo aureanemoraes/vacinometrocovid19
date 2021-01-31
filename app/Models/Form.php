@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -34,7 +35,8 @@ class Form extends Model
         'neighborhood',
         'state',
         'city',
-        'vaccinations_data'
+        'vaccinations_data',
+        'age'
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate'];
@@ -53,14 +55,17 @@ class Form extends Model
             // EXPORT
             if($form['gender'] =='') $form->gender = 'Não informado';
             if($form['cpf'] =='') $form->cpf = 'Não informado';
-
             if($form['public_place'] == '') $form->public_place = 'Não informado';
             if($form['place_number'] == '') $form->place_number = 'Não informado';
             if($form['neighborhood'] == '') $form->neighborhood = 'Não informado';
             if($form['state'] == '') $form->state = 'Não informado';
             if($form['city'] == '') $form->city = 'Não informado';
             if($form['vaccinations_data'] == '') $form->vaccinations_data = 'Não informado';
-
+            if(isset($form['age'])) {
+                $form->age = $form['age'];
+                //$form->birthdate = 'Não informado';
+            }
+/*
             $vacinationplace = VacinationPlace::where('name', $form['vacinationplace_id'])->first();
             if(isset($vacinationplace->id)) {
                 $form->vacinationplace_id = $vacinationplace->id;
@@ -89,7 +94,7 @@ class Form extends Model
             // EXPORT
 
             // STORING NEW FORM
-            //dd($form);
+            //dd($form);*/
         });
     }
 
@@ -126,4 +131,14 @@ class Form extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function getAgeFormattedAttribute()
+    {
+        if(isset($this->attributes['birthdate'])) {
+            return Carbon::parse($this->attributes['birthdate'])->age;
+
+        } else {
+            return $this->attributes['age'];
+
+        }
+    }
 }

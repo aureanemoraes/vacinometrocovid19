@@ -18,6 +18,7 @@ class CreateFormsTable extends Migration
             $table->string('name')->nullable();
             $table->string('cpf')->nullable();
             $table->date('birthdate')->nullable();
+            $table->string('age')->nullable();
             $table->unsignedBigInteger('vacinationplace_id')->nullable();
             $table->foreign('vacinationplace_id')->references('id')->on('vacination_places');
             $table->unsignedBigInteger('prioritygroup_id')->nullable();

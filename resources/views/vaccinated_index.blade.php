@@ -108,6 +108,7 @@
                             </label>
                         </div>
                     </div>
+                    <!--
                     <div class="col">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" value="pdf" id="export_type" name="export_type">
@@ -116,6 +117,7 @@
                             </label>
                         </div>
                     </div>
+                    -->
                 </div>
 
                 <button type="submit" class="btn btn-primary">Exportar</button>
@@ -138,7 +140,7 @@
             $('#index_table').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
-                }
+                },
             });
         } );
     </script>

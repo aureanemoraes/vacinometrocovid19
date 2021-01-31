@@ -67,7 +67,7 @@ class FormCrudController extends CrudController
 
     protected function setupShowOperation() {
         //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
-        $this->crud->addButton('bottom', 'teste', 'create', 'vaccination');
+        $this->crud->set('show.setFromDb', false);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         CRUD::addColumn([
@@ -84,6 +84,8 @@ class FormCrudController extends CrudController
                 'name_professional_health_vaccine' => 'Nome (profissional de saúde)'
             ]
         ]);
+        CRUD::addColumn(['name' => 'age_formatted', 'type' => 'text', 'label' => 'Idade']);
+
     }
 
     protected function setupListOperation()
