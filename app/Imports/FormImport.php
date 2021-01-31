@@ -29,11 +29,10 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
     public function model(array $row)
     {
        // dd($row);
-/*
-        if($row['id']) {
+        if(!isset($row['nome'])){
             return null;
         }
-*/
+
 
         return new Form([
             'name' => $row['nome'],

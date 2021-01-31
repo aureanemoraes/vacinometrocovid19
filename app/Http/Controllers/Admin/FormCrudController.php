@@ -71,16 +71,17 @@ class FormCrudController extends CrudController
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         CRUD::addColumn([
-            'name'  => 'vaccinations',
+            'name'  => 'vaccinations_data',
             'label' => 'Vacinas',
             'type'  => 'table',
             'columns' => [
-                'name'        => 'Nome',
-                'dose' => 'Dose',
-                'application_date'       => 'Data de aplicação',
-                'lot'         => 'Lote',
-                'lab' => 'Laboratório',
-                'health_professional_id' => 'health_professional_id'
+                'name_vaccine'  => 'Nome',
+                'dose_vaccine'  => 'Dose',
+                'application_date_vaccine' => 'Data de aplicação',
+                'lot_vaccine' => 'Lote',
+                'lab_vaccine' => 'Laboratório',
+                'cpf_professional_health_vaccine' => 'CPF (profissional de saúde)',
+                'name_professional_health_vaccine' => 'Nome (profissional de saúde)'
             ]
         ]);
     }
@@ -207,7 +208,7 @@ class FormCrudController extends CrudController
         ]);
 
         CRUD::addField([   // Table
-            'name'            => 'vaccinations',
+            'name'            => 'vaccinations_data',
             'label'           => 'Vacinação',
             'type'            => 'table',
             'columns'         => [
@@ -221,13 +222,6 @@ class FormCrudController extends CrudController
             ],
             'max' => 1, // maximum rows allowed in the table
             'min' => 1, // minimum rows allowed in the table
-        ]);
-
-        CRUD::addColumn([   // Table
-            'name'            => 'vaccination_example',
-            'label'           => 'html',
-            'type'            => 'Exemplo cadastro',
-            'value' => "<th"
         ]);
 
     }

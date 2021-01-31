@@ -4,13 +4,14 @@ namespace App\Exports;
 
 use App\Models\Form;
 use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromView;
+
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Illuminate\Contracts\View\View;
 
 
-class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
+class FormExport implements FromView, WithCustomCsvSettings
 {
     use Exportable;
 
@@ -31,22 +32,10 @@ class FormExport implements FromQuery, WithHeadings, WithCustomCsvSettings
         ];
     }
 
-    public function headings(): array
+    public function view(): View
     {
-        return [
-            '#',
-            'Nome',
-            'Idade',
-            'Lugar de vacinação',
-            'Grupo prioritário',
-            'Criado em',
-            'Atualizado em'
-        ];
-    }
-
-    public function query()
-    {
-        //dd($this->initialDate, $this->finalDate);
-        return Form::query()->whereBetween('created_at', [$this->initialDate, $this->finalDate]);
+        $immunizeds = Form::whereBetween('created_at', [$this->initialDate, $this->finalDate])->get();
+        //dd($immunizeds[0]);
+        return view('import')->with('immunizeds', $immunizeds);
     }
 }

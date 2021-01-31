@@ -36,7 +36,7 @@ class FormRequest extends LaravelFormRequest
             'place_number' => 'required',
             'neighborhood' => 'required',
             'city' => 'required',
-            'application_date_vaccine' => 'required|date'
+            //'application_date_vaccine' => 'required|date'
         ];
     }
 

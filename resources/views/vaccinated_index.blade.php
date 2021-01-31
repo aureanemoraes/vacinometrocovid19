@@ -30,9 +30,11 @@
                                 <strong class="h4">{{$vacinationplace->forms_count}} </strong>imunizados!
                             </div>
                         </div>
-                        @php
-                        $i++;
-                        @endphp
+                        @if($i == count($colors)-1)
+                            @php($i = 0)
+                            @else
+                            @php($i++)
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -55,8 +57,8 @@
                         <tr>
                             <td>{{$form->id}}</td>
                             <td>{{$form->name}}</td>
-                            <td>{{$form->vacinationplace->name}}</td>
-                            <td>{{$form->prioritygroup->name}}</td>
+                            <td>{{isset($form->vacinationplace->name) ? $form->vacinationplace->name : 'Não informado'}}</td>
+                            <td>{{isset($form->prioritygroup->name) ? $form->prioritygroup->name: 'Não informado'}}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -144,6 +146,6 @@
 
 
 
-    
+
 
 
