@@ -103,7 +103,7 @@ class Form extends Model
     }
 
     public function prioritygroup() {
-        return $this->belongsTo(Prioritygroup::class, 'prioritygroup_id', 'id');
+        return $this->belongsTo(PriorityGroup::class, 'prioritygroup_id', 'id');
     }
 
     public function vaccinations() {
