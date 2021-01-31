@@ -27,9 +27,16 @@ class FormRequest extends LaravelFormRequest
     {
         return [
             'name' => 'required|min:5|string|max:255',
-            'age' => 'required|min:1|max:3|string',
+            'cpf' => 'required|max:11',
+            'birthdate' => 'required|date',
             'prioritygroup_id' => 'required',
             'vacinationplace_id' => 'required',
+            'gender' => 'required',
+            'public_place' => 'required',
+            'place_number' => 'required',
+            'neighborhood' => 'required',
+            'city' => 'required',
+            'application_date_vaccine' => 'required|date'
         ];
     }
 

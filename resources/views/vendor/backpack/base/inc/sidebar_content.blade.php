@@ -15,3 +15,6 @@
     </ul>
 </li>
 @endif
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('vaccination') }}'><i class='nav-icon la la-question'></i> Vaccinations</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('healthprofessional') }}'><i class='nav-icon la la-question'></i> HealthProfessionals</a></li>

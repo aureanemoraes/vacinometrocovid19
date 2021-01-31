@@ -21,6 +21,7 @@ class FormCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -63,6 +64,27 @@ class FormCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
+
+    protected function setupShowOperation() {
+        //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
+        $this->crud->addButton('bottom', 'teste', 'create', 'vaccination');
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
+        CRUD::addColumn([
+            'name'  => 'vaccinations',
+            'label' => 'Vacinas',
+            'type'  => 'table',
+            'columns' => [
+                'name'        => 'Nome',
+                'dose' => 'Dose',
+                'application_date'       => 'Data de aplicação',
+                'lot'         => 'Lote',
+                'lab' => 'Laboratório',
+                'health_professional_id' => 'health_professional_id'
+            ]
+        ]);
+    }
+
     protected function setupListOperation()
     {
         /**
@@ -74,7 +96,6 @@ class FormCrudController extends CrudController
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
-
 
     }
 
@@ -95,7 +116,64 @@ class FormCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-        CRUD::addField(['name' => 'age', 'type' => 'text', 'label' => 'Idade']);
+        CRUD::addField(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
+
+        CRUD::addField([   // date_picker
+            'name'  => 'birthdate',
+            'type'  => 'date',
+            'label' => 'Data de nascimento',
+        ]);
+
+        CRUD::addField([
+            'name'        => 'gender',
+            'label'       => "Gênero",
+            'type'        => 'select2_from_array',
+            'options'     => ['Masculino' => 'Masculino', 'Feminino' => 'Feminino'],
+            'allows_null' => true,
+        ]);
+
+        CRUD::addField([
+            'name' => 'public_place',
+            'label' => 'Logradouro',
+            'type' => 'text'
+        ]);
+
+        CRUD::addField([
+            'name' => 'place_number',
+            'label' => 'Número',
+            'type' => 'text'
+        ]);
+        CRUD::addField([
+            'name' => 'neighborhood',
+            'label' => 'Bairro',
+            'type' => 'text'
+        ]);
+
+        CRUD::addField([
+            'name'        => 'city',
+            'label'       => "Município",
+            'type'        => 'select2_from_array',
+            'options'     => [
+                'Amapá' => 'Amapá',
+                'Calçoene' => 'Calçoene',
+                'Cutias' => 'Cutias',
+                'Ferreira Gomes' => 'Ferreira Gomes',
+                'Itaubal' => 'Itaubal',
+                'Laranjal do Jari' => 'Laranjal do Jari',
+                'Macapá' => 'Macapá',
+                'Mazagão' => 'Mazagão',
+                'Oiapoque' => 'Oiapoque',
+                'Pedra Branca do Amapari' => 'Pedra Branca do Amapari',
+                'Porto Grande' => 'Porto Grande',
+                'Pracuúba' => 'Pracuúba',
+                'Santana' => 'Santana',
+                'Serra do Navio' => 'Serra do Navio',
+                'Tartarugalzinho' => 'Tartarugalzinho',
+                'Vitória do Jari' => 'Vitória do Jari'
+            ],
+            'allows_null' => true,
+        ]);
+
         CRUD::addField([
             'type' => "relationship",
             'label' => 'Grupo prioritário',
@@ -128,6 +206,29 @@ class FormCrudController extends CrudController
             ],
         ]);
 
+        CRUD::addField([   // Table
+            'name'            => 'vaccinations',
+            'label'           => 'Vacinação',
+            'type'            => 'table',
+            'columns'         => [
+                'name_vaccine'  => 'Nome',
+                'dose_vaccine'  => 'Dose',
+                'application_date_vaccine' => 'Data de aplicação',
+                'lot_vaccine' => 'Lote',
+                'lab_vaccine' => 'Laboratório',
+                'cpf_professional_health_vaccine' => 'CPF (profissional de saúde)',
+                'name_professional_health_vaccine' => 'Nome (profissional de saúde)'
+            ],
+            'max' => 1, // maximum rows allowed in the table
+            'min' => 1, // minimum rows allowed in the table
+        ]);
+
+        CRUD::addColumn([   // Table
+            'name'            => 'vaccination_example',
+            'label'           => 'html',
+            'type'            => 'Exemplo cadastro',
+            'value' => "<th"
+        ]);
 
     }
 

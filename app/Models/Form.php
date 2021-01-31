@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\VacinationPlace;
-use App\Models\PriorityGroup;
+
 
 
 class Form extends Model
@@ -24,12 +24,19 @@ class Form extends Model
     protected $guarded = ['id'];
     protected $fillable = [
         'name',
-        'age',
+        'cpf',
+        'birthdate',
         'vacinationplace_id',
         'prioritygroup_id',
+        'gender',
+        'public_place',
+        'place_number',
+        'neighborhood',
+        'state',
+        'city'
     ];
     // protected $hidden = [];
-    // protected $dates = [];
+    protected $dates = ['birthdate'];
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +48,13 @@ class Form extends Model
     {
         static::creating(function ($form) {
             // EXPORT
-            
+            if($form['gender'] = '') $form->gender = 'Não informado';
+            if($form['public_place'] = '') $form->public_place = 'Não informado';
+            if($form['place_number'] = '') $form->place_number = 'Não informado';
+            if($form['neighborhood'] = '') $form->neighborhood = 'Não informado';
+            if($form['state'] = '') $form->state = 'Não informado';
+            if($form['city'] = '') $form->city = 'Não informado';
+
             $vacinationplace = VacinationPlace::where('name', $form['vacinationplace_id'])->first();
             if(isset($vacinationplace->id)) {
                 $form->vacinationplace_id = $vacinationplace->id;
@@ -63,7 +76,7 @@ class Form extends Model
             }
             // EXPORT
 
-        
+
         });
     }
 
@@ -78,6 +91,10 @@ class Form extends Model
 
     public function prioritygroup() {
         return $this->belongsTo(Prioritygroup::class, 'prioritygroup_id', 'id');
+    }
+
+    public function vacinations() {
+        return $this->hasMany(Vaccination::class, 'form_id', 'id');
     }
     /*
     |--------------------------------------------------------------------------
