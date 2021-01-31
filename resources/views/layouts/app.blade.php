@@ -25,7 +25,7 @@
 <body class="c-app">
   <div class="c-wrapper">
     <header class="c-header">
-        <img src="https://macapa.ap.gov.br/portal/wp-content/themes/macapa/assets/images/logo.png" alt="Brazão prefeitura de macapá" id="brazao_prefeitura">
+        <img src="https://macapa.ap.gov.br/portal/wp-content/themes/macapa/assets/images/logo.png" class="img-fluid" alt="Brazão prefeitura de macapá" id="brazao_prefeitura">
         @yield('header')
     </header>
     <div class="c-body">
