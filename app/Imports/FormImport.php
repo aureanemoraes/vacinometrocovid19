@@ -33,8 +33,13 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
             return null;
         }
 
+        $exists = Form::where('cpf', $row['cpf'])->first();
+        if(isset($exists)) {
+            return null;
+        }
 
         return new Form([
+            'cpf' => $row['cpf'],
             'name' => $row['nome'],
             'age' => $row['idade'],
             'prioritygroup_id' => $row['grupo_prioritario'],

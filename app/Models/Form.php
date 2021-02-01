@@ -53,8 +53,7 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
-            //dd($form['hp_data']);
-            
+
             $form->user_id = auth()->user()->id;
             // EXPORT
             if($form['gender'] =='') $form->gender = 'Não informado';
@@ -95,18 +94,16 @@ class Form extends Model
             }
             // EXPORT
         });
-/*
-        static::created(function ($form) {
-            // armazenar vacina
-            Vaccination::create([
-                'name' => 'v_name',
-                'dose' => 'v_dose',
-                'application_date' => 'v_application_date',
-                'lot' => 'v_lot',
-                'lab' => 'v_lab',
-                'form_id' => $form->id
-            ]);
-        });*/
+    }
+
+    public function getVaccinationsInfo() {
+        $vaccinations = Vaccination::where('form_id', $this->id)->get();
+        $table = '<table><thead><th>Nome</th><th>Laboratório</th><th>Lote</th><th>Dose</th><th>Data de aplicação</th><th>Profissional de saúde</th></thead><tbody>';
+        foreach($vaccinations as $vaccination) {
+            $table .= "<td>$vaccination->name</td><td>$vaccination->lab</td><td>$vaccination->lot</td><td>$vaccination->dose</td><td>$vaccination->application_date</td><td>$vaccination->health_professional->name</td>";
+        }
+        $table .= "</tbody></table>";
+        return $table;
     }
 
     /*

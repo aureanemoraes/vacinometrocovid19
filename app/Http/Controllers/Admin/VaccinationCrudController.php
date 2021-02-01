@@ -55,16 +55,24 @@ class VaccinationCrudController extends CrudController
             'order' => 1, // change the order save actions are in
         ]);
 
-        $immunized = Form::find(request()->query('form_id'));
+        $form_id = request()->query('form_id');
+        $immunized = Form::find($form_id);
         if(isset($immunized)) {
             CRUD::addField([   // CustomHTML
                 'name'  => 'form_info',
                 'type'  => 'custom_html',
                 'value' => "<h4 align='center'>Imunizado: <strong>$immunized->name - $immunized->cpf</strong> </h4>"
             ]);
+
         }
 
 
+        CRUD::addField([
+            'type' => "hidden",
+            'label' => 'Imunizado',
+            'name' => 'form_id', // the method on your model that defines the relationship,
+            'value' => $form_id
+        ]);
 
         CRUD::addField([
             'type' => "relationship",
@@ -114,6 +122,8 @@ class VaccinationCrudController extends CrudController
             'name' => 'lab', // the method on your model that defines the relationship,
             'options' => ['Insituto Butantan' => 'Insituto Butantan', 'Fiocruz' => 'Fiocruz'],
         ]);
+
+
     }
 
 

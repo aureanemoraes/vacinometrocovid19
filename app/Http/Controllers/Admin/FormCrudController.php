@@ -63,25 +63,29 @@ class FormCrudController extends CrudController
         $this->crud->addButtonFromView('line', 'new_vaccine', 'new_vaccine', 'beginning');
 
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-        CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
+        CRUD::addColumn(['name' => 'public_place', 'type' => 'text', 'label' => 'Logradouro']);
+        CRUD::addColumn(['name' => 'place_number', 'type' => 'text', 'label' => 'Nº']);
+        CRUD::addColumn(['name' => 'neighborhood', 'type' => 'text', 'label' => 'Bairro']);
+        CRUD::addColumn(['name' => 'state', 'type' => 'text', 'label' => 'Estado']);
+        CRUD::addColumn(['name' => 'city', 'type' => 'text', 'label' => 'Município']);
 
         CRUD::addColumn([
-            'name'  => 'vaccinations_data',
-            'label' => 'Vacinas',
-            'type'  => 'table',
-            'columns' => [
-                'name_vaccine'  => 'Nome',
-                'dose_vaccine'  => 'Dose',
-                'application_date_vaccine' => 'Data de aplicação',
-                'lot_vaccine' => 'Lote',
-                'lab_vaccine' => 'Laboratório',
-                'cpf_professional_health_vaccine' => 'CPF (profissional de saúde)',
-                'name_professional_health_vaccine' => 'Nome (profissional de saúde)'
-            ]
+            'name' => 'prioritygroup',
+            'type' => 'relationship', 'label' => 'Grupo prioritário',
+            'attribute' => 'name'
         ]);
+
+        CRUD::addColumn([
+            'name'  => 'vaccinations_details',
+            'label' => 'Vacinas', // Table column heading
+            'type'  => 'model_function',
+            'function_name' => 'getVaccinationsInfo', // the method in your Model
+        ]);
+
         CRUD::addColumn(['name' => 'age_formatted', 'type' => 'text', 'label' => 'Idade']);
         CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
+
 
 
     }
