@@ -16,7 +16,7 @@ class CreateFormsTable extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('cpf')->nullable();
+            $table->string('cpf')->nullable()->unique();
             $table->date('birthdate')->nullable();
             $table->string('age')->nullable();
             $table->unsignedBigInteger('vacinationplace_id')->nullable();

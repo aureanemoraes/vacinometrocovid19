@@ -35,9 +35,6 @@ class FormCrudController extends CrudController
             $this->crud->denyAccess('delete');
         }
 
-        
-
-
         CRUD::setModel(\App\Models\Form::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/form');
         CRUD::setEntityNameStrings('Formulário', 'Formulário');
@@ -61,9 +58,14 @@ class FormCrudController extends CrudController
 
     protected function setupShowOperation() {
         //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
+
         $this->crud->set('show.setFromDb', false);
+        $this->crud->addButtonFromView('line', 'new_vaccine', 'new_vaccine', 'beginning');
+
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
+        CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
+
         CRUD::addColumn([
             'name'  => 'vaccinations_data',
             'label' => 'Vacinas',
@@ -85,7 +87,7 @@ class FormCrudController extends CrudController
     }
 
     protected function setupListOperation()
-    {  
+    {
         $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
@@ -96,11 +98,21 @@ class FormCrudController extends CrudController
 
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
 
+
     }
 
     protected function setupCreateOperation()
     {
         CRUD::setValidation(FormRequest::class);
+
+        $this->crud->addSaveAction([
+            'name' => 'save_action_one',
+            'redirect' => function($crud, $request, $itemId) {
+                return route('vaccination.create', ['form_id' => $itemId]);
+            }, // what's the redirect URL, where the user will be taken after saving?
+            'order' => 1, // change the order save actions are in
+        ]);
+
 
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addField(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
@@ -115,7 +127,17 @@ class FormCrudController extends CrudController
             'name'        => 'gender',
             'label'       => "Gênero",
             'type'        => 'select2_from_array',
-            'options'     => ['Masculino' => 'Masculino', 'Feminino' => 'Feminino'],
+            'options'     => [
+                'Masculino' => 'Masculino',
+                'Feminino' => 'Feminino',
+                'Homem transgênero' => 'Homem transgênero',
+                'Mulher transgênero' => 'Mulher transgênero',
+                'Homem transexual' => 'Homem transexual',
+                'Cisgênero' => 'Cisgênero',
+                'Não sei responder' => 'Não sei responder',
+                'Prefiro não responder' => 'Prefiro não responder',
+                'Outros' => 'Outros'
+            ],
             'allows_null' => true,
         ]);
 
@@ -210,68 +232,6 @@ class FormCrudController extends CrudController
             'min' => 1, // minimum rows allowed in the table
         ]);*/
 
-        $this->crud->addField([
-            'type' => "select_from_array",
-            'label' => 'Selecione um profissional cadastrado',
-            'name' => 'hp_data', // the method on your model that defines the relationship,
-            'allows_null' => true,
-            'options' => HealthProfessional::all()->pluck('cpf')->toArray(),
-            'tab' => 'Profissional de saúde',
-
-        ]);
-
-        $this->crud->addField([
-                'type' => "text",
-                'label' => 'Nome',
-                'name' => 'hp_name', // the method on your model that defines the relationship,
-                'tab' => 'Profissional de saúde',
-        ]);
-
-        $this->crud->addField([
-            'type' => "text",
-            'label' => 'CPF',
-            'name' => 'hp_cpf', // the method on your model that defines the relationship,
-            'tab' => 'Profissional de saúde',
-        ]);
-
-        $this->crud->addField([
-            'type' => "select2_from_array",
-            'label' => 'Nome',
-            'name' => 'v_name', // the method on your model that defines the relationship,
-            'options' => ['CoronaVac/SinoVac' => 'CoronaVac/SinoVac', 'AstraZeneca/Oxford' => 'AstraZeneca/Oxford'],
-            'tab' => 'Vacinação',
-        ]);
-
-        $this->crud->addField([
-            'type' => "text",
-            'label' => 'Dose',
-            'default' => '1ª',
-            'name' => 'v_dose', // the method on your model that defines the relationship,
-            'tab' => 'Vacinação',
-        ]);
-
-        $this->crud->addField([
-            'type' => "date",
-            'label' => 'Data de aplicação',
-            'name' => 'v_application_date', // the method on your model that defines the relationship,
-            'tab' => 'Vacinação',
-        ]);
-
-        $this->crud->addField([
-            'type' => "text",
-            'label' => 'Lote',
-            'name' => 'v_lot', // the method on your model that defines the relationship,
-            'tab' => 'Vacinação',
-        ]);
-
-        $this->crud->addField([
-            'type' => "select2_from_array",
-            'label' => 'Laboratório',
-            'name' => 'v_lab', // the method on your model that defines the relationship,
-            'options' => ['Insituto Butantan' => 'Insituto Butantan', 'Fiocruz' => 'Fiocruz'],
-
-            'tab' => 'Vacinação',
-        ]);
     }
 
     protected function setupUpdateOperation()
