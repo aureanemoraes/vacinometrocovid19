@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Vaccination extends Model
+class HealthProfessional extends Model
 {
     use CrudTrait;
 
@@ -15,21 +15,13 @@ class Vaccination extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'vaccinations';
+    protected $table = 'health_professionals';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [
-        'name',
-        'dose',
-        'application_date',
-        'lot',
-        'lab',
-        'form_id',
-        'health_professional_id',
-    ];
+    protected $fillable = ['name', 'cpf'];
     // protected $hidden = [];
-    protected $dates = ['application_date'];
+    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -42,14 +34,9 @@ class Vaccination extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function form() {
-        return $this->belongsTo(Form::class);
+    public function vaccinations() {
+        return $this->hasMany(Vaccination::class);
     }
-
-    public function health_professional() {
-        return $this->belongsTo(HealthProfessional::class);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

@@ -30,7 +30,7 @@ class UserCrudController extends CrudController
         
         $user = backpack_user();
         if (!$user->hasRole('admin')) {
-            $this->crud->denyAccess('list', 'create');
+            $this->crud->denyAccess('list', 'create', 'update', 'show');
         }
         
 

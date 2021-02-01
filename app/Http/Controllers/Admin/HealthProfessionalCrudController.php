@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PriorityGroupRequest;
+use App\Http\Requests\HealthProfessionalRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class PriorityGroupCrudController
+ * Class HealthProfessionalCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PriorityGroupCrudController extends CrudController
+class HealthProfessionalCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -27,9 +27,9 @@ class PriorityGroupCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\PriorityGroup::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/prioritygroup');
-        CRUD::setEntityNameStrings('prioritygroup', 'Grupos prioritários');
+        CRUD::setModel(\App\Models\HealthProfessional::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/healthprofessional');
+        CRUD::setEntityNameStrings('healthprofessional', 'health_professionals');
     }
 
     /**
@@ -41,6 +41,7 @@ class PriorityGroupCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
 
 
         /**
@@ -58,9 +59,10 @@ class PriorityGroupCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(PriorityGroupRequest::class);
+        CRUD::setValidation(HealthProfessionalRequest::class);
 
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addField(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
 
 
         /**

@@ -36,10 +36,11 @@ class Form extends Model
         'state',
         'city',
         'vaccinations_data',
-        'age'
+        'age',
+        'user_id',
     ];
     // protected $hidden = [];
-    protected $dates = ['birthdate'];
+    protected $dates = ['birthdate', 'v_application_date'];
     protected $casts = ['vaccinations_data' => 'array'];
 
 
@@ -52,6 +53,9 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
+            //dd($form['hp_data']);
+            
+            $form->user_id = auth()->user()->id;
             // EXPORT
             if($form['gender'] =='') $form->gender = 'Não informado';
             if($form['cpf'] =='') $form->cpf = 'Não informado';
@@ -63,9 +67,8 @@ class Form extends Model
             if($form['vaccinations_data'] == '') $form->vaccinations_data = 'Não informado';
             if(isset($form['age'])) {
                 $form->age = $form['age'];
-                //$form->birthdate = 'Não informado';
             }
-/*
+
             $vacinationplace = VacinationPlace::where('name', $form['vacinationplace_id'])->first();
             if(isset($vacinationplace->id)) {
                 $form->vacinationplace_id = $vacinationplace->id;
@@ -77,7 +80,6 @@ class Form extends Model
                     ]);
                     $form->vacinationplace_id = $newvacinationplace->id;
                 }
-
             }
 
             $prioritygroup = Prioritygroup::where('name', $form['prioritygroup_id'])->first();
@@ -92,10 +94,19 @@ class Form extends Model
                 }
             }
             // EXPORT
-
-            // STORING NEW FORM
-            //dd($form);*/
         });
+/*
+        static::created(function ($form) {
+            // armazenar vacina
+            Vaccination::create([
+                'name' => 'v_name',
+                'dose' => 'v_dose',
+                'application_date' => 'v_application_date',
+                'lot' => 'v_lot',
+                'lab' => 'v_lab',
+                'form_id' => $form->id
+            ]);
+        });*/
     }
 
     /*
@@ -109,6 +120,10 @@ class Form extends Model
 
     public function prioritygroup() {
         return $this->belongsTo(PriorityGroup::class, 'prioritygroup_id', 'id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     public function vaccinations() {

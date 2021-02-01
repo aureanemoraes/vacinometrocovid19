@@ -6,6 +6,8 @@ use App\Exports\FormExport;
 use App\Imports\FormImport;
 use App\Http\Requests\FormRequest;
 use App\Models\VacinationPlace;
+use App\Models\HealthProfessional;
+
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
@@ -26,17 +28,16 @@ class FormCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
-
-
-
-
     public function setup()
     {
+        $user = backpack_user();
+        if (!$user->hasRole('admin')) {
+            $this->crud->denyAccess('delete');
+        }
+
+        
+
+
         CRUD::setModel(\App\Models\Form::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/form');
         CRUD::setEntityNameStrings('Formulário', 'Formulário');
@@ -58,13 +59,6 @@ class FormCrudController extends CrudController
         ]);
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
-
     protected function setupShowOperation() {
         //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
         $this->crud->set('show.setFromDb', false);
@@ -85,39 +79,29 @@ class FormCrudController extends CrudController
             ]
         ]);
         CRUD::addColumn(['name' => 'age_formatted', 'type' => 'text', 'label' => 'Idade']);
+        CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
+
 
     }
 
     protected function setupListOperation()
-    {
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+    {  
+        $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
-        $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
+        $user = backpack_user();
+        if ($user->hasRole('admin')) {
+            $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
+        }
+
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
 
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(FormRequest::class);
 
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addField(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
 
@@ -208,7 +192,7 @@ class FormCrudController extends CrudController
                 'modal_class' => 'modal-dialog modal-xl', // use modal-sm, modal-lg to change width
             ],
         ]);
-
+/*
         CRUD::addField([   // Table
             'name'            => 'vaccinations_data',
             'label'           => 'Vacinação',
@@ -224,23 +208,76 @@ class FormCrudController extends CrudController
             ],
             'max' => 1, // maximum rows allowed in the table
             'min' => 1, // minimum rows allowed in the table
+        ]);*/
+
+        $this->crud->addField([
+            'type' => "select_from_array",
+            'label' => 'Selecione um profissional cadastrado',
+            'name' => 'hp_data', // the method on your model that defines the relationship,
+            'allows_null' => true,
+            'options' => HealthProfessional::all()->pluck('cpf')->toArray(),
+            'tab' => 'Profissional de saúde',
+
         ]);
 
+        $this->crud->addField([
+                'type' => "text",
+                'label' => 'Nome',
+                'name' => 'hp_name', // the method on your model that defines the relationship,
+                'tab' => 'Profissional de saúde',
+        ]);
+
+        $this->crud->addField([
+            'type' => "text",
+            'label' => 'CPF',
+            'name' => 'hp_cpf', // the method on your model that defines the relationship,
+            'tab' => 'Profissional de saúde',
+        ]);
+
+        $this->crud->addField([
+            'type' => "select2_from_array",
+            'label' => 'Nome',
+            'name' => 'v_name', // the method on your model that defines the relationship,
+            'options' => ['CoronaVac/SinoVac' => 'CoronaVac/SinoVac', 'AstraZeneca/Oxford' => 'AstraZeneca/Oxford'],
+            'tab' => 'Vacinação',
+        ]);
+
+        $this->crud->addField([
+            'type' => "text",
+            'label' => 'Dose',
+            'default' => '1ª',
+            'name' => 'v_dose', // the method on your model that defines the relationship,
+            'tab' => 'Vacinação',
+        ]);
+
+        $this->crud->addField([
+            'type' => "date",
+            'label' => 'Data de aplicação',
+            'name' => 'v_application_date', // the method on your model that defines the relationship,
+            'tab' => 'Vacinação',
+        ]);
+
+        $this->crud->addField([
+            'type' => "text",
+            'label' => 'Lote',
+            'name' => 'v_lot', // the method on your model that defines the relationship,
+            'tab' => 'Vacinação',
+        ]);
+
+        $this->crud->addField([
+            'type' => "select2_from_array",
+            'label' => 'Laboratório',
+            'name' => 'v_lab', // the method on your model that defines the relationship,
+            'options' => ['Insituto Butantan' => 'Insituto Butantan', 'Fiocruz' => 'Fiocruz'],
+
+            'tab' => 'Vacinação',
+        ]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
     }
-/*
-
-    }*/
 
     public function exportView()
     {
@@ -263,12 +300,6 @@ class FormCrudController extends CrudController
 
     public function import(Request $request)
     {
-        /*
-        $a = $request->input('initial_date');
-        $b = $request->input('final_date');
-        return (new FormExport($a, $b))->download('vacinometrocovid19_'.$a.'_to_'.$b.'.csv');
-        return view("crud::export");"
-        */
         if($request->hasFile('file')) {
             (new FormImport)->import($request->file('file'));
         }

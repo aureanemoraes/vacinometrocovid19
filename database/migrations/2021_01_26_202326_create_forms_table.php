@@ -31,6 +31,8 @@ class CreateFormsTable extends Migration
             $table->string('city')->nullable();
             $table->tinyInteger('activeted')->default(0);
             $table->longText('vaccinations_data')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
