@@ -39,7 +39,7 @@ class FormCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Form::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/form');
-        CRUD::setEntityNameStrings('form', 'Formulário');
+        CRUD::setEntityNameStrings('Formulário', 'Formulário');
     }
 
     public function fetchVacinationPlace()
