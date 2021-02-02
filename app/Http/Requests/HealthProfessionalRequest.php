@@ -27,7 +27,7 @@ class HealthProfessionalRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'cpf' => 'required|max:11',
+            'cpf' => 'required|cpf',
         ];
     }
 

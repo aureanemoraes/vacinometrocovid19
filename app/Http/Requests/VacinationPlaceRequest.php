@@ -26,7 +26,8 @@ class VacinationPlaceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:5|max:255'
+            'name' => 'required|string|max:255',
+            'name' => 'string|max:255',
         ];
     }
 

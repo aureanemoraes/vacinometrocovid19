@@ -1,9 +1,9 @@
 <!-- This file is used to store sidebar items, starting with Backpack\Base 0.9.0 -->
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('vacinationplace') }}'><i class='nav-icon la la-hospital'></i> Locais da vacinação</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('form') }}'><i class='nav-icon la la-user-shield'></i> Imunizados</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('prioritygroup') }}'><i class='nav-icon la la-exclamation-circle'></i> Grupos prioritários</a></li>
 @if(backpack_user()->hasRole('admin'))
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('vacinationplace') }}'><i class='nav-icon la la-hospital'></i> Locais da vacinação</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('prioritygroup') }}'><i class='nav-icon la la-exclamation-circle'></i> Grupos prioritários</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('healthprofessional') }}'><i class='nav-icon la la-user-md'></i> Profissionais de saúde</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('vaccination') }}'><i class='nav-icon la la-syringe'></i> Vacinações</a></li>
 <!-- Users, Roles, Permissions -->

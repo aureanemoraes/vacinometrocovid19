@@ -102,8 +102,8 @@ class FormCrudController extends CrudController
         $user = backpack_user();
         if ($user->hasRole('admin')) {
             $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
+            $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
         }
-        $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
 
 
     }
@@ -217,7 +217,7 @@ class FormCrudController extends CrudController
             'label' => 'Local de vacinação',
             'name' => 'vacinationplace_id', // the method on your model that defines the relationship,
             'data_source' =>  route('form.fetchVacinationPlace'),
-            'ajax' => true,
+            //'ajax' => true,
             'inline_create' => [ // specify the entity in singular
                 'modal_route' => route('vacinationplace-inline-create'), // InlineCreate::getInlineCreateModal()
                 'create_route' =>  route('vacinationplace-inline-create-save'),
@@ -260,6 +260,5 @@ class FormCrudController extends CrudController
             (new FormImport)->import($request->file('file'));
         }
         return redirect()->route('form.index');
-
     }
 }

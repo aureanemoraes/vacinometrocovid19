@@ -15,7 +15,8 @@ class CreateVacinationPlacesTable extends Migration
     {
         Schema::create('vacination_places', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('codigo_cnes')->unique();
+            $table->string('name');
             $table->timestamps();
         });
     }

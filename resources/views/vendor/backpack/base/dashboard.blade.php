@@ -3,13 +3,8 @@
 @php
     $widgets['before_content'][] = [
         'type'        => 'jumbotron',
-        'heading'     => trans('backpack::base.welcome'),
-        'content'     => trans('backpack::base.use_sidebar'),
-        'button_link' => backpack_url('logout'),
-        'button_text' => trans('backpack::base.logout'),
+        'heading'     => 'Bem vindo ao VacinômetroCOVID19!',
+        'content'     => '<a href="'. route('form.create') . '" class="btn btn-square btn-info btn-lg btn-block">Cadastre um novo imunizado!</a>'
     ];
 @endphp
 
-@section('content')
-
-@endsection

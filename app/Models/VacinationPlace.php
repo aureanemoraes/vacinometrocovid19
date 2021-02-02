@@ -20,7 +20,7 @@ class VacinationPlace extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'forms'];
+    protected $fillable = ['name', 'forms', 'codigo_cnes'];
     // protected $hidden = [];
     // protected $dates = [];
 

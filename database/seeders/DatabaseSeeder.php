@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
            RolesSeeder::class,
            PermissionsSeeder::class,
            ModelHasPermissionsSeeder::class,
-           ModelHasRoleSeeder::class
+           ModelHasRoleSeeder::class,
+           VacinationPlaceSeeder::class,
+           PriorityGroupSeeder::class
+
         ]);
     }
 }
