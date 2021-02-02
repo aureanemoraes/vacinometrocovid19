@@ -4,6 +4,8 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('form') }}'><i class='nav-icon la la-user-shield'></i> Imunizados</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('prioritygroup') }}'><i class='nav-icon la la-exclamation-circle'></i> Grupos prioritários</a></li>
 @if(backpack_user()->hasRole('admin'))
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('healthprofessional') }}'><i class='nav-icon la la-user-md'></i> Profissionais de saúde</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('vaccination') }}'><i class='nav-icon la la-syringe'></i> Vacinações</a></li>
 <!-- Users, Roles, Permissions -->
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-users"></i> Administração</a>
@@ -16,5 +18,3 @@
 @endif
 
 
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('healthprofessional') }}'><i class='nav-icon la la-question'></i> HealthProfessionals</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('vaccination') }}'><i class='nav-icon la la-question'></i> Vaccinations</a></li>

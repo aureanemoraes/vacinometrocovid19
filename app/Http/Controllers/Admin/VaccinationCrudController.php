@@ -20,7 +20,7 @@ class VaccinationCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Vaccination::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/vaccination');
-        CRUD::setEntityNameStrings('vaccination', 'vaccinations');
+        CRUD::setEntityNameStrings('vacinações', 'Vacinações');
     }
 
     public function fetchHealthProfessional()
@@ -48,7 +48,7 @@ class VaccinationCrudController extends CrudController
     {
         CRUD::setValidation(VaccinationRequest::class);
         $this->crud->addSaveAction([
-            'name' => 'save_action_one',
+            'name' => 'Salvar e finalizar',
             'redirect' => function($crud, $request, $itemId) {
                 return route('form.index');
             }, // what's the redirect URL, where the user will be taken after saving?

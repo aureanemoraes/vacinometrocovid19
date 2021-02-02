@@ -29,8 +29,8 @@ class CheckIfAdmin
     private function checkIfUserIsAdmin($user)
     {
         //dd();
-        return ($user['activeted'] == 1);
-       //return true;
+        //return ($user['activeted'] == 1);
+       return true;
     }
 
     /**

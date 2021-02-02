@@ -24,7 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'activeted'
+        'cpf'
     ];
 
     /**
@@ -35,6 +35,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+
     ];
 
     /**
@@ -45,4 +46,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    public function setPasswordAttribute($value) {
+        if(!isset($this->password)) {
+            $this->attributes['password'] = bcrypt($value);
+        } else {
+            $this->attributes['password'] = $value;
+
+        }
+    }
 }

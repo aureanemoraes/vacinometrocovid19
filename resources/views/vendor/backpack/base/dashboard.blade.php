@@ -11,4 +11,5 @@
 @endphp
 
 @section('content')
+
 @endsection

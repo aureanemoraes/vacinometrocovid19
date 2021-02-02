@@ -26,7 +26,12 @@ class VaccinationRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'health_professional_id' => 'required',
+            'name' => 'required|string|max:255',
+            'dose' => 'required|string|max:255',
+            'application_date' => 'required|date',
+            'lote' => 'required|string|max:255',
+            'lab' => 'required|string|max:255',
         ];
     }
 

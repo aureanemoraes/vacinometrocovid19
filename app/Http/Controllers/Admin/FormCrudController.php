@@ -60,7 +60,11 @@ class FormCrudController extends CrudController
         //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
 
         $this->crud->set('show.setFromDb', false);
-        $this->crud->addButtonFromView('line', 'new_vaccine', 'new_vaccine', 'beginning');
+        //dd();
+        if(count($this->crud->getCurrentEntry()->vaccinations) == 0) {
+            $this->crud->addButtonFromView('line', 'new_vaccine', 'new_vaccine', 'beginning');
+        }
+
 
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
@@ -82,24 +86,23 @@ class FormCrudController extends CrudController
             'type'  => 'model_function',
             'function_name' => 'getVaccinationsInfo', // the method in your Model
         ]);
-
         CRUD::addColumn(['name' => 'age_formatted', 'type' => 'text', 'label' => 'Idade']);
         CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
-
-
+        CRUD::addColumn(['name' => 'created_at', 'type' => 'date', 'label' => 'Criado em', 'attribute' => 'created_at']);
 
     }
 
     protected function setupListOperation()
     {
         $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
+
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'prioritygroup', 'type' => 'relationship', 'label' => 'Grupo prioritário']);
         $user = backpack_user();
         if ($user->hasRole('admin')) {
             $this->crud->addButtonFromView('top', 'Exportar', 'export', 'beginning');
         }
-
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
 
 
@@ -110,7 +113,7 @@ class FormCrudController extends CrudController
         CRUD::setValidation(FormRequest::class);
 
         $this->crud->addSaveAction([
-            'name' => 'save_action_one',
+            'name' => 'Salvar e continuar',
             'redirect' => function($crud, $request, $itemId) {
                 return route('vaccination.create', ['form_id' => $itemId]);
             }, // what's the redirect URL, where the user will be taken after saving?
@@ -160,6 +163,12 @@ class FormCrudController extends CrudController
             'name' => 'neighborhood',
             'label' => 'Bairro',
             'type' => 'text'
+        ]);
+
+        CRUD::addField([
+            'name' => 'state',
+            'value' => 'Amapá',
+            'type' => 'hidden'
         ]);
 
         CRUD::addField([
@@ -218,23 +227,6 @@ class FormCrudController extends CrudController
                 'modal_class' => 'modal-dialog modal-xl', // use modal-sm, modal-lg to change width
             ],
         ]);
-/*
-        CRUD::addField([   // Table
-            'name'            => 'vaccinations_data',
-            'label'           => 'Vacinação',
-            'type'            => 'table',
-            'columns'         => [
-                'name_vaccine'  => 'Nome',
-                'dose_vaccine'  => 'Dose',
-                'application_date_vaccine' => 'Data de aplicação',
-                'lot_vaccine' => 'Lote',
-                'lab_vaccine' => 'Laboratório',
-                'cpf_professional_health_vaccine' => 'CPF (profissional de saúde)',
-                'name_professional_health_vaccine' => 'Nome (profissional de saúde)'
-            ],
-            'max' => 1, // maximum rows allowed in the table
-            'min' => 1, // minimum rows allowed in the table
-        ]);*/
 
     }
 

@@ -35,13 +35,12 @@ class Form extends Model
         'neighborhood',
         'state',
         'city',
-        'vaccinations_data',
         'age',
         'user_id',
+        'created_at'
     ];
     // protected $hidden = [];
-    protected $dates = ['birthdate', 'v_application_date'];
-    protected $casts = ['vaccinations_data' => 'array'];
+    protected $dates = ['birthdate', 'created_at'];
 
 
     /*
@@ -98,12 +97,19 @@ class Form extends Model
 
     public function getVaccinationsInfo() {
         $vaccinations = Vaccination::where('form_id', $this->id)->get();
-        $table = '<table><thead><th>Nome</th><th>Laboratório</th><th>Lote</th><th>Dose</th><th>Data de aplicação</th><th>Profissional de saúde</th></thead><tbody>';
-        foreach($vaccinations as $vaccination) {
-            $table .= "<td>$vaccination->name</td><td>$vaccination->lab</td><td>$vaccination->lot</td><td>$vaccination->dose</td><td>$vaccination->application_date</td><td>$vaccination->health_professional->name</td>";
+        if(count($vaccinations) > 0) {
+            $table = '<table><thead><th>Código</th><th>Nome</th><th>Laboratório</th><th>Lote</th><th>Dose</th><th>Data de aplicação</th><th>Profissional de saúde</th><th>Ações</th></thead><tbody>'; 
+            foreach($vaccinations as $vaccination) {
+                $application_date_formatted = date_format($vaccination->application_date, 'd/m/Y');
+                $health_professional_name = $vaccination->health_professional->name;
+                $edit_buttom = "<a href='/admin/vaccination/$vaccination->id/edit ' class='btn btn-sm btn-link'><i class='la la-edit'></i> Alterar</a>";
+                $table .= "<td>$vaccination->id</td><td>$vaccination->name</td><td>$vaccination->lab</td><td>$vaccination->lot</td><td>$vaccination->dose</td><td>$application_date_formatted</td><td>$health_professional_name</td><td>$edit_buttom</td>";
+            }
+            $table .= "</tbody></table>";
+            return $table;
+        } else {
+            return 'Não há vacinação cadastrada.';
         }
-        $table .= "</tbody></table>";
-        return $table;
     }
 
     /*
@@ -137,12 +143,6 @@ class Form extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
-    /*
-    |--------------------------------------------------------------------------
-    | MUTATORS
-    |--------------------------------------------------------------------------
-    */
     public function getAgeFormattedAttribute()
     {
         if(isset($this->attributes['birthdate'])) {
@@ -153,4 +153,22 @@ class Form extends Model
 
         }
     }
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = ucwords($value);
+    }
+    
+    public function setPublicPlaceAttribute($value) {
+        $this->attributes['public_place'] = ucfirst($value);
+    }
+
+    public function setNeighborhoodAttribute($value) {
+        $this->attributes['neighborhood'] = ucfirst($value);
+    }
+
 }

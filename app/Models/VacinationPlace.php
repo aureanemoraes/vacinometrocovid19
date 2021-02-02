@@ -60,4 +60,7 @@ class VacinationPlace extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = ucfirst($value);
+    }
 }

@@ -54,4 +54,7 @@ class PriorityGroup extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = ucfirst($value);
+    }
 }

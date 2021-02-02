@@ -54,4 +54,7 @@ class HealthProfessional extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    public function setNameAttribute($value) {
+        $this->attributes['name'] = ucwords($value);
+    }
 }
