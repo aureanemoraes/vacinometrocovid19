@@ -154,6 +154,12 @@ return [
         'prioritygroup_id' => 'grupo prioritário',
         'public_place' => 'logradouro',
         'place_number' => 'número',
+        'health_professional' => 'profissional de saúde',
+        'health_professional_id' => 'profissional de saúde',
+        'dose' => 'dose',
+        'application_date' => 'data de aplicação',
+        'lot' => 'lote',
+        'lab' => 'laboratório',
 
         'form' => 'formulário',
         'forms' => 'formulários',
