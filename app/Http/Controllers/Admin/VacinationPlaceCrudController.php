@@ -31,14 +31,12 @@ class VacinationPlaceCrudController extends CrudController
 
         CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
-        CRUD::addColumn(['name' => 'codigo_cnes', 'type' => 'text', 'label' => 'Código CNES']);
     }
 
     protected function setupCreateOperation()
     {
         CRUD::setValidation(VacinationPlaceRequest::class);
 
-        CRUD::addField(['name' => 'codigo_cnes', 'type' => 'text', 'label' => 'Código CNES']);
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
 
     }

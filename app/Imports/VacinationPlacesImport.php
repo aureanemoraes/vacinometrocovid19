@@ -24,8 +24,7 @@ class VacinationPlacesImport implements ToModel, WithHeadingRow, WithCustomCsvSe
         //dd($row);
         if(isset($row['estabelecimento']) && isset($row['cnes'])) {
             return new VacinationPlace([
-                'codigo_cnes' => $row['cnes'],
-                'name' => $row['estabelecimento']
+                'name' => $row['cnes'] . ' - ' . $row['estabelecimento']
             ]);
         } else {
             return null;
