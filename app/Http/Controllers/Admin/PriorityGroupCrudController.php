@@ -25,7 +25,7 @@ class PriorityGroupCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\PriorityGroup::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/prioritygroup');
-        CRUD::setEntityNameStrings('prioritygroup', 'Grupos prioritários');
+        CRUD::setEntityNameStrings('grupo prioritário', 'Grupos prioritários');
     }
 
     protected function setupListOperation()

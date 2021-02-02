@@ -22,7 +22,7 @@ class VacinationPlaceCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\VacinationPlace::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/vacinationplace');
-        CRUD::setEntityNameStrings('vacinationplace', 'Locais de vacinação');
+        CRUD::setEntityNameStrings('locais de vacinação', 'Locais de vacinação');
     }
 
     protected function setupListOperation()

@@ -148,6 +148,13 @@ return [
 
     'attributes' => [
         'vacinationplace' => 'local de vacinação',
+        'vacinationplace_id' => 'local de vacinação',
+        'birthdate' => 'data de nascimento',
+        'prioritygroup' => 'grupo prioritário',
+        'prioritygroup_id' => 'grupo prioritário',
+        'public_place' => 'logradouro',
+        'place_number' => 'número',
+
         'form' => 'formulário',
         'forms' => 'formulários',
         'publicplace' => 'logradouro',

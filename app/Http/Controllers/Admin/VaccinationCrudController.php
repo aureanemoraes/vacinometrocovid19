@@ -33,14 +33,12 @@ class VaccinationCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('dose');
-        CRUD::column('application_date');
-        CRUD::column('lot');
-        CRUD::column('lab');
-        CRUD::column('form_id');
-        CRUD::column('cpf_professional_health');
-        CRUD::column('name_professional_health');
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'dose', 'type' => 'text', 'label' => 'Dose']);
+        CRUD::addColumn(['name' => 'application_date', 'type' => 'date', 'label' => 'Data de aplicação']);
+        CRUD::addColumn(['name' => 'lab', 'type' => 'text', 'label' => 'Laboratório']);
+        CRUD::addColumn(['name' => 'form', 'type' => 'relationship', 'label' => 'Imunizado', 'attribute' => 'name']);
+
 
     }
 

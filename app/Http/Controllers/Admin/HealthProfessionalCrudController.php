@@ -29,7 +29,7 @@ class HealthProfessionalCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\HealthProfessional::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/healthprofessional');
-        CRUD::setEntityNameStrings('healthprofessional', 'health_professionals');
+        CRUD::setEntityNameStrings('profissional de saúde', 'profissionais de saúde');
     }
 
 
