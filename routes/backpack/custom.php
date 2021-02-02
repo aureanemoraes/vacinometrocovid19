@@ -24,7 +24,8 @@ Route::group([
     Route::post('form/import', 'FormCrudController@import');
     Route::get('vacinationplace/import', 'VacinationPlaceCrudController@importView');
     Route::post('vacinationplace/import', 'VacinationPlaceCrudController@import');
-
+    Route::get('prioritygroup/import', 'PriorityGroupCrudController@importView');
+    Route::post('prioritygroup/import', 'PriorityGroupCrudController@import');
     Route::crud('user', 'UserCrudController');
     Route::crud('prioritygroup', 'PriorityGroupCrudController');
     Route::crud('healthprofessional', 'HealthProfessionalCrudController');

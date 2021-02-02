@@ -201,7 +201,7 @@ class FormCrudController extends CrudController
             'label' => 'Grupo prioritário',
             'name' => 'prioritygroup_id', // the method on your model that defines the relationship,
             'data_source' =>  route('form.fetchPriorityGroup'),
-            'ajax' => true,
+            //'ajax' => true,
             'inline_create' => [ // specify the entity in singular
                 'modal_route' => route('prioritygroup-inline-create'), // InlineCreate::getInlineCreateModal()
                 'create_route' =>  route('prioritygroup-inline-create-save'),

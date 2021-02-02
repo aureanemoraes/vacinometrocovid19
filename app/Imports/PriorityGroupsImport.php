@@ -2,20 +2,33 @@
 
 namespace App\Imports;
 
-use App\PriorityGroup;
+use App\Models\PriorityGroup;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\Importable;
 
-class PriorityGroupsImport implements ToModel
+class PriorityGroupsImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+    use Importable;
+
+    public function getCsvSettings(): array
+    {
+        return [
+            'demiliter' => ','
+        ];
+    }
+
     public function model(array $row)
     {
-        return new PriorityGroup([
-            //
-        ]);
+        //dd($row);
+        if(isset($row['codigo']) && isset($row['titulo'])) {
+            return new PriorityGroup([
+                'name' => $row['codigo'] . ' - ' . $row['titulo']
+            ]);
+        } else {
+            return null;
+        }
+        
     }
 }
