@@ -54,6 +54,7 @@
                     </thead>
                     <tbody>
                     @foreach($forms as $form)
+                        
                         <tr>
                             <td>{{$form->id}}</td>
                             <td>{{$form->name}}</td>
@@ -117,6 +118,15 @@
                             </label>
                         </div>
                     </div>
+                    /*
+                            $pieces = explode(" ", $form->name);
+                            for($i ; $i<count($pieces); $i++) {
+                                if($i=0) {
+                                    $firstName = strtoupper($piece[$i])
+                                }
+                                $lastNames .= substr($piece[$i], 1) . '. ';
+                            }*/
+                        
                     -->
                 </div>
 

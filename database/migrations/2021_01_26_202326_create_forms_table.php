@@ -27,9 +27,8 @@ class CreateFormsTable extends Migration
             $table->string('public_place')->nullable();
             $table->string('place_number')->nullable();
             $table->string('neighborhood')->nullable();
-            $table->string('state')->default('Amapá');
+            $table->string('state')->default('Amapá')->nullable();
             $table->string('city')->nullable();
-            $table->tinyInteger('activeted')->default(0);
             $table->longText('vaccinations_data')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');

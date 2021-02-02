@@ -55,14 +55,14 @@ class Form extends Model
 
             $form->user_id = auth()->user()->id;
             // EXPORT
-            if($form['gender'] =='') $form->gender = 'Não informado';
-            if($form['cpf'] =='') $form->cpf = 'Não informado';
-            if($form['public_place'] == '') $form->public_place = 'Não informado';
-            if($form['place_number'] == '') $form->place_number = 'Não informado';
-            if($form['neighborhood'] == '') $form->neighborhood = 'Não informado';
-            if($form['state'] == '') $form->state = 'Não informado';
-            if($form['city'] == '') $form->city = 'Não informado';
-            if($form['vaccinations_data'] == '') $form->vaccinations_data = 'Não informado';
+            if($form['gender'] =='') $form->gender = null;
+            if($form['cpf'] =='') $form->cpf = null;
+            if($form['public_place'] == '') $form->public_place = null;
+            if($form['place_number'] == '') $form->place_number = null;
+            if($form['neighborhood'] == '') $form->neighborhood = null;
+            if($form['state'] == '') $form->state = null;
+            if($form['city'] == '') $form->city = null;
+            if($form['vaccinations_data'] == '') $form->vaccinations_data = null;
             if(isset($form['age'])) {
                 $form->age = $form['age'];
             }
