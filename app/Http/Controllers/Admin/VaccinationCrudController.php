@@ -45,7 +45,7 @@ class VaccinationCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if(!backpack_user()->hasHole('admin')) {
+        if(!backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         }
 
@@ -148,8 +148,8 @@ class VaccinationCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
-            $this->crud->denyAccess('edit');
+        if($this->crud->getCurrentEntry()->user_id != backpack_user()->id) {
+            $this->crud->denyAccess('update');
         }
 
         $this->setupCreateOperation();

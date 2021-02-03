@@ -58,7 +58,7 @@ class FormCrudController extends CrudController
 
     protected function setupShowOperation() {
         $this->crud->set('show.setFromDb', false);
-        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
+        if(($this->crud->getCurrentEntry()->id != backpack_user()->id) && (!backpack_user()->hasRole('admin'))) {
             $this->crud->denyAccess('show');
         }
 
@@ -94,7 +94,8 @@ class FormCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if(!backpack_user()->hasHole('admin')) {
+        $user = backpack_user();
+        if(!backpack_user()->hasRole('admin')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         }
         CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
@@ -234,8 +235,8 @@ class FormCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
-            $this->crud->denyAccess('edit');
+        if(($this->crud->getCurrentEntry()->user_id != backpack_user()->id) &&(!backpack_user()->hasRole('admin'))) {
+            $this->crud->denyAccess('update');
         }
         $this->setupCreateOperation();
     }
