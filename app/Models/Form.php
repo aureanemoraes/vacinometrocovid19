@@ -153,6 +153,22 @@ class Form extends Model
 
         }
     }
+
+    public function getNameFormattedAttribute()
+    {
+        $pieces = explode(" ", $this->attributes['name']);
+        $lastNames = ' ';
+        for($i=0 ; $i<count($pieces); $i++) {
+            if($i==0) {
+                $firstName = strtoupper($pieces[$i]);
+            }
+            $lastNames .= $pieces[$i][0] . '. ';
+            //dd($lastNames);
+        }
+        $fullName = $firstName . $lastNames;
+        return $fullName;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

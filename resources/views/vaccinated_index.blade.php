@@ -24,16 +24,18 @@
                         $i=0;
                     @endphp
                     @foreach($vacinationplaces as $vacinationplace)
-                        <div class="col-sm-2">
-                            <div class="c-callout c-callout-{{$colors[$i]}}">
-                                <small class="text-muted">{{$vacinationplace->name}}</small><br>
-                                <strong class="h4">{{$vacinationplace->forms_count}} </strong>imunizados!
+                        @if($vacinationplace->forms_count > 0)
+                            <div class="col-sm-2">
+                                <div class="c-callout c-callout-{{$colors[$i]}}">
+                                    <small class="text-muted">{{$vacinationplace->name}}</small><br>
+                                    <strong class="h4">{{$vacinationplace->forms_count}} </strong>imunizados!
+                                </div>
                             </div>
-                        </div>
-                        @if($i == count($colors)-1)
-                            @php($i = 0)
-                            @else
-                            @php($i++)
+                            @if($i == count($colors)-1)
+                                @php($i = 0)
+                                @else
+                                @php($i++)
+                            @endif
                         @endif
                     @endforeach
                 </div>
@@ -57,7 +59,7 @@
                         
                         <tr>
                             <td>{{$form->id}}</td>
-                            <td>{{$form->name}}</td>
+                            <td>{{$form->name_formatted}}</td>
                             <td>{{isset($form->vacinationplace->name) ? $form->vacinationplace->name : 'Não informado'}}</td>
                             <td>{{isset($form->prioritygroup->name) ? $form->prioritygroup->name: 'Não informado'}}</td>
                         </tr>
