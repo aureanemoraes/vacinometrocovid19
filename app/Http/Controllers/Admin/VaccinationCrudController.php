@@ -31,8 +31,24 @@ class VaccinationCrudController extends CrudController
         ]);
     }
 
+    protected function setupShowOperation() {
+        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
+            $this->crud->denyAccess('show');
+        }
+
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'dose', 'type' => 'text', 'label' => 'Dose']);
+        CRUD::addColumn(['name' => 'application_date', 'type' => 'date', 'label' => 'Data de aplicação']);
+        CRUD::addColumn(['name' => 'lab', 'type' => 'text', 'label' => 'Laboratório']);
+        CRUD::addColumn(['name' => 'form', 'type' => 'relationship', 'label' => 'Imunizado', 'attribute' => 'name']);
+    }
+
     protected function setupListOperation()
     {
+        if(!backpack_user()->hasHole('admin')) {
+            $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        }
+
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'dose', 'type' => 'text', 'label' => 'Dose']);
         CRUD::addColumn(['name' => 'application_date', 'type' => 'date', 'label' => 'Data de aplicação']);
@@ -61,15 +77,20 @@ class VaccinationCrudController extends CrudController
                 'type'  => 'custom_html',
                 'value' => "<h4 align='center'>Imunizado: <strong>$immunized->name - $immunized->cpf</strong> </h4>"
             ]);
-
         }
-
 
         CRUD::addField([
             'type' => "hidden",
             'label' => 'Imunizado',
             'name' => 'form_id', // the method on your model that defines the relationship,
             'value' => $form_id
+        ]);
+
+        CRUD::addField([
+            'type' => "hidden",
+            'label' => 'Criado por',
+            'name' => 'user_id', // the method on your model that defines the relationship,
+            'value' => backpack_user()->id
         ]);
 
         CRUD::addField([
@@ -127,6 +148,10 @@ class VaccinationCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
+            $this->crud->denyAccess('edit');
+        }
+
         $this->setupCreateOperation();
     }
 }

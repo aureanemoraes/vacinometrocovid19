@@ -27,6 +27,7 @@ class Vaccination extends Model
         'lab',
         'form_id',
         'health_professional_id',
+        'user_id'
     ];
     // protected $hidden = [];
     protected $dates = ['application_date'];
@@ -48,6 +49,10 @@ class Vaccination extends Model
 
     public function health_professional() {
         return $this->belongsTo(HealthProfessional::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     /*

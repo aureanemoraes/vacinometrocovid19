@@ -57,14 +57,14 @@ class FormCrudController extends CrudController
     }
 
     protected function setupShowOperation() {
-        //$this->crud->addButtonFromModelFunction('bottom', 'Vacina', '$model_function_name', $position);
-
         $this->crud->set('show.setFromDb', false);
-        //dd();
+        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
+            $this->crud->denyAccess('show');
+        }
+
         if(count($this->crud->getCurrentEntry()->vaccinations) == 0) {
             $this->crud->addButtonFromView('line', 'new_vaccine', 'new_vaccine', 'beginning');
         }
-
 
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
@@ -94,7 +94,9 @@ class FormCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        if(!backpack_user()->hasHole('admin')) {
+            $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
+        }
         CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
 
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
@@ -232,6 +234,9 @@ class FormCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
+            $this->crud->denyAccess('edit');
+        }
         $this->setupCreateOperation();
     }
 

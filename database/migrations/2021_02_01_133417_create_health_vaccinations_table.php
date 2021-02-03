@@ -24,6 +24,8 @@ class CreateHealthVaccinationsTable extends Migration
             $table->foreign('health_professional_id')->references('id')->on('health_professionals');
             $table->unsignedBigInteger('form_id')->nullable();
             $table->foreign('form_id')->references('id')->on('forms');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
