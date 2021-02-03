@@ -161,8 +161,10 @@ class Form extends Model
         for($i=0 ; $i<count($pieces); $i++) {
             if($i==0) {
                 $firstName = strtoupper($pieces[$i]);
+            } else {
+                $lastNames .= $pieces[$i][0] . '. ';
+
             }
-            $lastNames .= $pieces[$i][0] . '. ';
             //dd($lastNames);
         }
         $fullName = $firstName . $lastNames;
