@@ -16,6 +16,7 @@
     <tr>
         <th>#</th>
         <th>nome</th>
+        <th>idade</th>
         <th>lugar_vacinacao</th>
         <th>grupo_prioritario</th>
         <th>criado_em</th>
@@ -24,7 +25,9 @@
     <tbody>
     @foreach($immunizeds as $immunized)
         <tr>
+            <td>{{ $immunized->id }}</td>
             <td>{{ $immunized->name }}</td>
+            <td>{{ $immunized->age_formatted }}</td>
             <td>{{ $immunized->vacinationplace->name }}</td>
             <td>{{ $immunized->prioritygroup->name }}</td>
             <td>{{ $immunized->created_at }}</td>

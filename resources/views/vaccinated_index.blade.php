@@ -52,6 +52,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nome</th>
+                        <th scope="col">Idade</th>
                         <th scope="col">Lugar de vacinação</th>
                         <th scope="col">Grupo prioritário</th>
                     </tr>
@@ -62,6 +63,8 @@
                         <tr>
                             <td>{{$form->id}}</td>
                             <td>{{$form->name}}</td>
+                            <td>{{$form->age_formatted}} anos</td>
+
                             <td>{{isset($form->vacinationplace->name) ? $form->vacinationplace->name : 'Não informado'}}</td>
                             <td>{{isset($form->prioritygroup->name) ? $form->prioritygroup->name: 'Não informado'}}</td>
                         </tr>
