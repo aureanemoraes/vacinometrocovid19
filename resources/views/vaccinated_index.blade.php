@@ -16,6 +16,8 @@
             <div class="container">
                 <h1 class="display-4"><strong class="text-success">{{$forms->count()}}</strong> pessoas foram vacinadas em Macapá/AP!</h1>
                 <p class="lead">Última atualização em: {{date_format($forms->last()->created_at, 'd/m/Y H:i')}}</p>
+                <p class="lead">Fonte: Secretaria Municipal de Saúde de Macapá</p>
+
                 <hr class="my-4">
 
                 <div class="row">
@@ -56,10 +58,10 @@
                     </thead>
                     <tbody>
                     @foreach($forms as $form)
-                        
+
                         <tr>
                             <td>{{$form->id}}</td>
-                            <td>{{$form->name_formatted}}</td>
+                            <td>{{$form->name}}</td>
                             <td>{{isset($form->vacinationplace->name) ? $form->vacinationplace->name : 'Não informado'}}</td>
                             <td>{{isset($form->prioritygroup->name) ? $form->prioritygroup->name: 'Não informado'}}</td>
                         </tr>
@@ -128,7 +130,7 @@
                                 }
                                 $lastNames .= substr($piece[$i], 1) . '. ';
                             }*/
-                        
+
                     -->
                 </div>
 

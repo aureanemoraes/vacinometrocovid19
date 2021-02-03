@@ -98,7 +98,7 @@ class Form extends Model
     public function getVaccinationsInfo() {
         $vaccinations = Vaccination::where('form_id', $this->id)->get();
         if(count($vaccinations) > 0) {
-            $table = '<table><thead><th>Código</th><th>Nome</th><th>Laboratório</th><th>Lote</th><th>Dose</th><th>Data de aplicação</th><th>Profissional de saúde</th><th>Ações</th></thead><tbody>'; 
+            $table = '<table><thead><th>Código</th><th>Nome</th><th>Laboratório</th><th>Lote</th><th>Dose</th><th>Data de aplicação</th><th>Profissional de saúde</th><th>Ações</th></thead><tbody>';
             foreach($vaccinations as $vaccination) {
                 $application_date_formatted = date_format($vaccination->application_date, 'd/m/Y');
                 $health_professional_name = $vaccination->health_professional->name;
@@ -153,7 +153,7 @@ class Form extends Model
 
         }
     }
-
+/*
     public function getNameFormattedAttribute()
     {
         $pieces = explode(" ", $this->attributes['name']);
@@ -169,7 +169,7 @@ class Form extends Model
         }
         $fullName = $firstName . $lastNames;
         return $fullName;
-    }
+    }*/
 
     /*
     |--------------------------------------------------------------------------
@@ -180,7 +180,7 @@ class Form extends Model
     public function setNameAttribute($value) {
         $this->attributes['name'] = ucwords($value);
     }
-    
+
     public function setPublicPlaceAttribute($value) {
         $this->attributes['public_place'] = ucfirst($value);
     }
