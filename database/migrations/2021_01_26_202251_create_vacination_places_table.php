@@ -17,6 +17,8 @@ class CreateVacinationPlacesTable extends Migration
             $table->id();
             //$table->string('codigo_cnes')->unique()->nullable();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

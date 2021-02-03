@@ -19,7 +19,7 @@ class HealthProfessional extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'cpf'];
+    protected $fillable = ['name', 'cpf', 'user_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -37,7 +37,12 @@ class HealthProfessional extends Model
     public function vaccinations() {
         return $this->hasMany(Vaccination::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
     /*
+
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------

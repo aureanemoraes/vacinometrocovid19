@@ -16,6 +16,8 @@ class CreatePriorityGroupsTable extends Migration
         Schema::create('priority_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

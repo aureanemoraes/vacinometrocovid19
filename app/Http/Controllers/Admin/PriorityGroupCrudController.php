@@ -28,10 +28,21 @@ class PriorityGroupCrudController extends CrudController
         CRUD::setEntityNameStrings('grupo prioritário', 'Grupos prioritários');
     }
 
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
+    }
+
     protected function setupListOperation()
     {
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+
 
     }
 
@@ -39,6 +50,12 @@ class PriorityGroupCrudController extends CrudController
     {
         CRUD::setValidation(PriorityGroupRequest::class);
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addField([
+            'type' => "hidden",
+            'label' => 'Criado por',
+            'name' => 'user_id', // the method on your model that defines the relationship,
+            'value' => backpack_user()->id
+        ]);
     }
 
     protected function setupUpdateOperation()

@@ -17,6 +17,8 @@ class CreateHealthProfessionalsTable extends Migration
             $table->id();
             $table->string('cpf')->unique();
             $table->string('name');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

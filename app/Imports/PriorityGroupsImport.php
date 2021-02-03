@@ -24,7 +24,8 @@ class PriorityGroupsImport implements ToModel, WithHeadingRow, WithCustomCsvSett
         //dd($row);
         if(isset($row['codigo']) && isset($row['titulo'])) {
             return new PriorityGroup([
-                'name' => $row['codigo'] . ' - ' . $row['titulo']
+                'name' => $row['codigo'] . ' - ' . $row['titulo'],
+                'user_id' => auth()->user()->id
             ]);
         } else {
             return null;

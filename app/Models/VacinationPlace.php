@@ -20,7 +20,7 @@ class VacinationPlace extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['name', 'forms'];
+    protected $fillable = ['name', 'forms', 'user_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -40,6 +40,10 @@ class VacinationPlace extends Model
     */
     public function forms() {
         return $this->hasMany(Form::class, 'vacinationplace_id', 'id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
     /*
     |--------------------------------------------------------------------------

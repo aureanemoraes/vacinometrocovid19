@@ -25,6 +25,16 @@ class VacinationPlaceCrudController extends CrudController
         CRUD::setEntityNameStrings('locais de vacinação', 'Locais de vacinação');
     }
 
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
+    }
+
+
     protected function setupListOperation()
     {
         $this->crud->addButtonFromView('top', 'Importar', 'import', 'beginning');
@@ -38,6 +48,12 @@ class VacinationPlaceCrudController extends CrudController
         CRUD::setValidation(VacinationPlaceRequest::class);
 
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addField([
+            'type' => "hidden",
+            'label' => 'Criado por',
+            'name' => 'user_id', // the method on your model that defines the relationship,
+            'value' => backpack_user()->id
+        ]);
 
     }
 

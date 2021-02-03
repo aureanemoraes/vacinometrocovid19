@@ -32,13 +32,20 @@ class HealthProfessionalCrudController extends CrudController
         CRUD::setEntityNameStrings('profissional de saúde', 'profissionais de saúde');
     }
 
+    protected function setupShowOperation()
+    {
+        $this->crud->set('show.setFromDb', false);
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
+        CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
+        CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
+        CRUD::addColumn(['name' => 'user', 'type' => 'relationship', 'label' => 'Criado por', 'attribute' => 'name']);
+    }
 
     protected function setupListOperation()
     {
+        CRUD::addColumn(['name' => 'id', 'type' => 'text', 'label' => 'Código']);
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
-
-
     }
 
 
@@ -48,6 +55,12 @@ class HealthProfessionalCrudController extends CrudController
 
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addField(['name' => 'cpf', 'type' => 'text', 'label' => 'CPF']);
+        CRUD::addField([
+            'type' => "hidden",
+            'label' => 'Criado por',
+            'name' => 'user_id', // the method on your model that defines the relationship,
+            'value' => backpack_user()->id
+        ]);
 
 
     }
