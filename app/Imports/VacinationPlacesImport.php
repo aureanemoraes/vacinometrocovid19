@@ -23,14 +23,20 @@ class VacinationPlacesImport implements ToModel, WithHeadingRow, WithCustomCsvSe
     {
         //dd($row);
         if(isset($row['estabelecimento']) && isset($row['cnes'])) {
-            return new VacinationPlace([
-                'name' => $row['cnes'] . ' - ' . $row['estabelecimento'],
-                'user_id' => auth()->user()->id
+            $exists = VacinationPlace::where('name', trim($row['cnes']) . ' - ' . trim($row['estabelecimento']))->first();
+            if(isset($exists)) {
+                //dd('a');
+                return null;
+            } else {
+                return new VacinationPlace([
+                    'name' => trim($row['cnes']) . ' - ' . trim($row['estabelecimento']),
+                    'user_id' => auth()->user()->id
 
-            ]);
+                ]);
+            }
         } else {
             return null;
         }
-        
+
     }
 }

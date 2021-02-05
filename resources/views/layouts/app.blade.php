@@ -15,8 +15,8 @@
 
     }
     #brazao_prefeitura {
-        width: 150px;
-        length: 150px;
+        width: 150px !important;
+        length: 150px !important;
     }
     </style>
     @yield('css')
@@ -25,7 +25,7 @@
 <body class="c-app">
   <div class="c-wrapper">
     <header class="c-header">
-        <h3>(ExperTIse) Vacinômetro</h3>
+        <img src="https://macapa.ap.gov.br/portal/wp-content/themes/macapa/assets/images/logo.png" alt="Brazão prefeitura de macapá" id="brazao_prefeitura">
         @yield('header')
     </header>
     <div class="c-body">

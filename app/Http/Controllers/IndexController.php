@@ -24,20 +24,35 @@ class IndexController extends Controller
     }
 
    public function export(Request $request) {
-       $initial_date = $request->input('initial_date');
-       $final_date = $request->input('final_date');
+       $time = $request->input('time');
        $export_type = $request->input('export_type');
+       switch($time) {
+           case 'one_day':
+               $time = Carbon::now()->subDays(1);
+               break;
+           case 'one_week':
+               $time = Carbon::now()->subDays(7);
+               break;
+           case 'one_month':
+               $time = Carbon::now()->subMonth();
+               break;
+           case 'all':
+               $time = null;
+               break;
+       }
        switch($export_type) {
            case 'csv_virgula':
-               return (new FormExport($initial_date, $final_date, ','))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+               return (new FormExport($time, ','))->download('vacinometrocovid19_'. now() .'.csv');
                break;
            case 'csv_ponto_virgula':
-               return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.csv');
+               return (new FormExport($time, ';'))->download('vacinometrocovid19_'. now() .'.csv');
                break;
            case 'xlsx':
-               return (new FormExport($initial_date, $final_date, ';'))->download('vacinometrocovid19_'.$initial_date.'_to_'.$final_date.'.xlsx');
+               return (new FormExport($time))->download('vacinometrocovid19_'. now() .'.xlsx');
                break;
+               /*
            case 'pdf':
+
                $initial_date_formatted = Carbon::parse($initial_date);
                $final_date_formatted = Carbon::parse($final_date);
                //$immunizeds = Form::whereBetween('created_at', [$initial_date_formatted, $final_date_formatted])->get();
@@ -45,6 +60,7 @@ class IndexController extends Controller
                $pdf = PDF::loadView('import', compact('immunizeds'));
                return $pdf->download('import.pdf');
                break;
+               */
        }
    }
 }

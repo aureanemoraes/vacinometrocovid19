@@ -20,7 +20,7 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
     public function getCsvSettings(): array
     {
         return [
-            'delimiter' => ',',
+            'delimiter' => ';',
             'input_encoding' => 'iso-8859-1'
         ];
     }
@@ -47,14 +47,14 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
                 ]);
             }
         }
-        
+
         return new Form([
-            'name' => $row['nome'],
-            'age' => $row['idade'],
-            'prioritygroup_id' => $row['grupo_prioritario'],
-            'vacinationplace_id' => $row['unidade_de_saude']
+            'name' => trim($row['nome']),
+            'age' => trim($row['idade']),
+            'prioritygroup_id' => trim($row['grupo_prioritario']),
+            'vacinationplace_id' => trim($row['unidade_de_saude'])
         ]);
-        
+
 
 
     }

@@ -16,8 +16,7 @@
             <div class="container">
                 <h1 class="display-4"><strong class="text-success">{{$forms->count()}}</strong> pessoas foram vacinadas em Macapá/AP!</h1>
                 <p class="lead">Última atualização em: {{date_format($forms->last()->created_at, 'd/m/Y H:i')}}</p>
-                <p class="lead">Fonte: Secretaria Municipal de Saúde de Macapá</p>
-
+                <p class="lead">Fonte: Secretaria Municipal de Saúde de Macapá</p> <span>(As informações são atualizadas em até 72 horas)</span>
                 <hr class="my-4">
 
                 <div class="row">
@@ -62,7 +61,7 @@
 
                         <tr>
                             <td>{{$form->id}}</td>
-                            <td>{{$form->name}}</td>
+                            <td>{{$form->name_formatted}}</td>
                             <td>{{$form->age_formatted}} anos</td>
 
                             <td>{{isset($form->vacinationplace->name) ? $form->vacinationplace->name : 'Não informado'}}</td>
@@ -78,19 +77,13 @@
 
         <div align="center">
             <form action="/exportcsv" method="POST">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="initial_date">Data inicial</label>
-                            <input type="date" class="form-control" id="initial_date" name="initial_date">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="final_date">Data final</label>
-                            <input type="date" class="form-control" id="final_date" name="final_date">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <select class="form-control" name="time">
+                        <option value="one_day">Um dia atrás</option>
+                        <option value="one_week">Uma semana atrás</option>
+                        <option value="one_month">Um mês atrás</option>
+                        <option value="all">Todos</option>
+                    </select>
                 </div>
 
                 <div class="row" align="left">

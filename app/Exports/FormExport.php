@@ -15,10 +15,9 @@ class FormExport implements FromView, WithCustomCsvSettings
 {
     use Exportable;
 
-    public function __construct($initialDate, $finalDate, $delimiter = ',')
+    public function __construct($time, $delimiter = ',')
     {
-        $this->initialDate = Carbon::parse($initialDate);
-        $this->finalDate = Carbon::parse($finalDate);
+        $this->time = $time;
         $this->delimiter = $delimiter;
 
     }
@@ -34,8 +33,11 @@ class FormExport implements FromView, WithCustomCsvSettings
 
     public function view(): View
     {
-        $immunizeds = Form::whereBetween('created_at', [$this->initialDate, $this->finalDate])->get();
-        //dd($immunizeds[0]);
+        if($this->time == null) {
+            $immunizeds = Form::all();
+        } else {
+            $immunizeds = Form::whereBetween('created_at', [$this->time, now()])->get();
+        }
         return view('import')->with('immunizeds', $immunizeds);
     }
 }

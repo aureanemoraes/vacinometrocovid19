@@ -153,7 +153,7 @@ class Form extends Model
 
         }
     }
-/*
+
     public function getNameFormattedAttribute()
     {
         $pieces = explode(" ", $this->attributes['name']);
@@ -165,11 +165,10 @@ class Form extends Model
                 $lastNames .= $pieces[$i][0] . '. ';
 
             }
-            //dd($lastNames);
         }
         $fullName = $firstName . $lastNames;
         return $fullName;
-    }*/
+    }
 
     /*
     |--------------------------------------------------------------------------
