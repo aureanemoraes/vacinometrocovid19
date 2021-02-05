@@ -25,7 +25,7 @@
 <body class="c-app">
   <div class="c-wrapper">
     <header class="c-header">
-        <h3>ExperTIse Technologies</h3>
+        <h3>(ExperTIse) Vacinômetro</h3>
         @yield('header')
     </header>
     <div class="c-body">
