@@ -38,6 +38,14 @@ class Vaccination extends Model
     |--------------------------------------------------------------------------
     */
 
+    protected static function booted()
+    {
+        static::creating(function ($vaccination) {
+
+            $vaccination->user_id = auth()->user()->id;
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

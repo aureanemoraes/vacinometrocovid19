@@ -60,6 +60,14 @@ class VaccinationCrudController extends CrudController
 
     protected function setupCreateOperation()
     {
+        $form_id = request()->query('form_id');
+        $immunized = Form::find($form_id);
+        $current_user_id = backpack_user()->id;
+        //dd($immunized);
+        if(isset($immunized) && !($immunized->user_id == $current_user_id)) {
+            $this->crud->denyAccess('create');
+        }
+
         CRUD::setValidation(VaccinationRequest::class);
         $this->crud->addSaveAction([
             'name' => 'Salvar e finalizar',
@@ -69,12 +77,7 @@ class VaccinationCrudController extends CrudController
             'order' => 1, // change the order save actions are in
         ]);
 
-        $form_id = request()->query('form_id');
-        $immunized = Form::find($form_id);
-        if(!($immunized->user_id == backpack_user()->id)) {
-            $this->crud->denyAccess('create');
 
-        }
         if(isset($immunized)) {
             CRUD::addField([   // CustomHTML
                 'name'  => 'form_info',
@@ -88,13 +91,6 @@ class VaccinationCrudController extends CrudController
             'label' => 'Imunizado',
             'name' => 'form_id', // the method on your model that defines the relationship,
             'value' => $form_id
-        ]);
-
-        CRUD::addField([
-            'type' => "hidden",
-            'label' => 'Criado por',
-            'name' => 'user_id', // the method on your model that defines the relationship,
-            'value' => backpack_user()->id
         ]);
 
         CRUD::addField([
