@@ -16,7 +16,7 @@
             <div class="container">
                 <h1 class="display-4"><strong class="text-success">{{$forms->count()}}</strong> pessoas foram vacinadas em Macapá/AP!</h1>
                 <p class="lead">Última atualização em: {{date_format($forms->last()->created_at, 'd/m/Y H:i')}}</p>
-                <p class="lead">Fonte: Secretaria Municipal de Saúde de Macapá</p> <span>(As informações são atualizadas em até 72 horas)</span>
+                <p class="lead">Fonte: Secretaria Municipal de Saúde de Macapá</p>
                 <hr class="my-4">
 
                 <div class="row">
