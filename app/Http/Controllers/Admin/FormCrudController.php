@@ -118,12 +118,17 @@ class FormCrudController extends CrudController
         CRUD::setValidation(FormRequest::class);
 
         $this->crud->addSaveAction([
-            'name' => 'Salvar e continuar',
+            'name' => 'save_and_vaccine',
+            'button_text' => 'Salvar e ir para vacinação',
             'redirect' => function($crud, $request, $itemId) {
                 return route('vaccination.create', ['form_id' => $itemId]);
             }, // what's the redirect URL, where the user will be taken after saving?
             'order' => 1, // change the order save actions are in
         ]);
+        if(isset($this->crud->getCurrentEntry()->vaccinations)) {
+            $this->crud->orderSaveAction('save_and_back ', 1);
+            $this->crud->removeSaveAction('save_and_vaccine');
+        }
 
 
         CRUD::addField(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
