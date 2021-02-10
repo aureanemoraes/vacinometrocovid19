@@ -32,6 +32,7 @@ class VaccinationRequest extends FormRequest
             'application_date' => 'required|date',
             'lot' => 'required|string|max:255',
             'lab' => 'required|string|max:255',
+            'form_id' => 'required|integer'
         ];
     }
 

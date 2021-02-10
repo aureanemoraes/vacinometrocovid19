@@ -160,7 +160,7 @@ return [
         'application_date' => 'data de aplicação',
         'lot' => 'lote',
         'lab' => 'laboratório',
-
+        'form_id' => 'imunizado',
         'form' => 'formulário',
         'forms' => 'formulários',
         'publicplace' => 'logradouro',

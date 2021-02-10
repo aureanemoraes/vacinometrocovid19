@@ -26,6 +26,13 @@ class PriorityGroupCrudController extends CrudController
         CRUD::setModel(\App\Models\PriorityGroup::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/prioritygroup');
         CRUD::setEntityNameStrings('grupo prioritário', 'Grupos prioritários');
+        $user = backpack_user();
+        if (!$user->hasRole('admin')) {
+            $this->crud->denyAccess('delete');
+        }
+        if (!$user->hasRole('admin') && !$user->hasRole('manager')) {
+            $this->crud->denyAccess(['list', 'update', 'show']);
+        }
     }
 
     protected function setupShowOperation()

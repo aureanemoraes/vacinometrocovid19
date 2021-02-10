@@ -6,6 +6,7 @@ use App\Http\Requests\VaccinationRequest;
 use App\Models\Form;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 
 class VaccinationCrudController extends CrudController
 {
@@ -21,6 +22,13 @@ class VaccinationCrudController extends CrudController
         CRUD::setModel(\App\Models\Vaccination::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/vaccination');
         CRUD::setEntityNameStrings('vacinações', 'Vacinações');
+        $user = backpack_user();
+        if (!$user->hasRole('admin')) {
+            $this->crud->denyAccess('delete');
+        }
+        if (!$user->hasRole('admin') && !$user->hasRole('manager')) {
+            $this->crud->denyAccess(['list', 'show']);
+        }
     }
 
     public function fetchHealthProfessional()
@@ -32,9 +40,6 @@ class VaccinationCrudController extends CrudController
     }
 
     protected function setupShowOperation() {
-        if($this->crud->getCurrentEntry()->id != backpack_user()->id) {
-            $this->crud->denyAccess('show');
-        }
 
         CRUD::addColumn(['name' => 'name', 'type' => 'text', 'label' => 'Nome']);
         CRUD::addColumn(['name' => 'dose', 'type' => 'text', 'label' => 'Dose']);
@@ -45,7 +50,7 @@ class VaccinationCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if(!backpack_user()->hasRole('admin')) {
+        if(!backpack_user()->hasRole('admin') && !backpack_user()->hasRole('manager')) {
             $this->crud->addClause('where', 'user_id', '=', backpack_user()->id);
         }
 
@@ -148,8 +153,17 @@ class VaccinationCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        if($this->crud->getCurrentEntry()->user_id != backpack_user()->id) {
+        $user_logged_is_author_user = $this->crud->getCurrentEntry()->user_id != backpack_user()->id;
+        $user_not_admin = !backpack_user()->hasRole('admin');
+        if($user_logged_is_author_user && $user_not_admin) {
             $this->crud->denyAccess('update');
+        }
+        if(!$user_logged_is_author_user) {
+            $current = Carbon::now();
+            $expire_date = Carbon::parse($this->crud->getCurrentEntry()->created_at)->addDays(2);
+            if($current->diffInHours($expire_date) < 0) {
+                $this->crud->denyAccess('update');
+            }
         }
 
         $this->setupCreateOperation();

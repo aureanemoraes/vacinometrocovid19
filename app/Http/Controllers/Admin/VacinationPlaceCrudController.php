@@ -23,6 +23,13 @@ class VacinationPlaceCrudController extends CrudController
         CRUD::setModel(\App\Models\VacinationPlace::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/vacinationplace');
         CRUD::setEntityNameStrings('locais de vacinação', 'Locais de vacinação');
+        $user = backpack_user();
+        if (!$user->hasRole('admin')) {
+            $this->crud->denyAccess('delete');
+        }
+        if (!$user->hasRole('admin') && !$user->hasRole('manager')) {
+            $this->crud->denyAccess(['list', 'update', 'show']);
+        }
     }
 
     protected function setupShowOperation()
@@ -62,7 +69,7 @@ class VacinationPlaceCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
-    
+
     public function importView()
     {
         return view("crud::import");

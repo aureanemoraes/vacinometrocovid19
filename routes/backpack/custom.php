@@ -18,8 +18,6 @@ Route::group([
     Route::crud('vacinationplace', 'VacinationPlaceCrudController');
 
     Route::crud('form', 'FormCrudController');
-    Route::get('form/export', 'FormCrudController@exportView');
-    Route::post('form/export', 'FormCrudController@export');
     Route::get('form/import', 'FormCrudController@importView');
     Route::post('form/import', 'FormCrudController@import');
     Route::get('vacinationplace/import', 'VacinationPlaceCrudController@importView');

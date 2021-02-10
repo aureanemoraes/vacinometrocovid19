@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
+use Illuminate\Validation\Rule;
 
 class FormRequest extends LaravelFormRequest
 {
@@ -27,7 +28,8 @@ class FormRequest extends LaravelFormRequest
     {
         return [
             'name' => 'required|min:5|string|max:255',
-            'cpf' => 'required|max:11|cpf|unique:forms',
+            //'cpf' => 'required|max:11|cpf|unique:forms,cpf',
+            'cpf' => ['required', 'max:11', Rule::unique('forms')->ignore($this->id), 'cpf'],
             'birthdate' => 'required|date',
             'prioritygroup_id' => 'required',
             'vacinationplace_id' => 'required',
