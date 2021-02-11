@@ -28,35 +28,23 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
 
     public function model(array $row)
     {
-       // dd($row);
-        if(!isset($row['nome'])){
+        $prioritygroup = trim($row['grupo_prioritario']);
+        $vaccinationplace = trim($row['unidade_de_saude']);
+        $exists = Form::whereHas('prioritygroup', function( $query) use($prioritygroup){
+            $query->where('name', '=', $prioritygroup);
+        })->whereHas('vacinationplace', function ( $query) use($vaccinationplace) {
+            $query->where('name', '=', $vaccinationplace);
+        })->where('name', trim($row['nome']))->where('age', trim($row['idade']))->first();
+       // dd($exists);
+        if(isset($exists)) {
             return null;
+        } else {
+            return new Form([
+                'name' => trim($row['nome']),
+                'age' => trim($row['idade']),
+                'prioritygroup_id' => trim($row['grupo_prioritario']),
+                'vacinationplace_id' => trim($row['unidade_de_saude'])
+            ]);
         }
-
-        if(isset($row['cpf'])) {
-            $exists = Form::where('cpf', $row['cpf'])->first();
-            if(isset($exists)) {
-                return null;
-            } else {
-                return new Form([
-                    'cpf' => $row['cpf'],
-                    'name' => $row['nome'],
-                    'age' => $row['idade'],
-                    'prioritygroup_id' => $row['grupo_prioritario'],
-                    'vacinationplace_id' => $row['unidade_de_saude']
-                ]);
-            }
-        }
-
-        return new Form([
-            'name' => trim($row['nome']),
-            'age' => trim($row['idade']),
-            'prioritygroup_id' => trim($row['grupo_prioritario']),
-            'vacinationplace_id' => trim($row['unidade_de_saude'])
-        ]);
-
-
-
     }
-
 }

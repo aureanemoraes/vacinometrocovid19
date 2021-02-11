@@ -14,3 +14,4 @@ yarn-error.log
 storage/framework/laravel-excel/
 
 /.idea/
+.idea
