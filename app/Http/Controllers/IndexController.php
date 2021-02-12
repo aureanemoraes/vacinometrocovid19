@@ -15,12 +15,16 @@ class IndexController extends Controller
 
     public function index()
     {
-        $forms = Form::all();
+        $forms = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();
+
+        //dd($forms[0]);
         $vacinationplaces = VacinationPlace::withCount('forms')->get();
+        //dd($vacinationplaces[]);
 
         return view('vaccinated_index')
             ->with('forms', $forms)
             ->with('vacinationplaces', $vacinationplaces);
+        //return $forms;
     }
 
    public function export(Request $request) {

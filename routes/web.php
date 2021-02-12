@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,5 +22,18 @@ Route::get('/noaccess', function () {
 });
 
 Route::post('/exportcsv', [\App\Http\Controllers\IndexController::class, 'export']);
+Route::get('/pre-cadastro', [\App\Http\Controllers\PreFormController::class, 'index']);
+
+Route::post('/cep', function(Request $request){
+    $zip_code = $request->input('zip_code');
+    $address = $request->input('public_place');
+
+    if(isset($zip_code)) {
+        $cepResponse = \Canducci\Cep\Facades\Cep::find($request->input('zip_code'));
+        $data = $cepResponse->getCepModel();
+        return response()->json($data);
+    }
+});
+
 
 

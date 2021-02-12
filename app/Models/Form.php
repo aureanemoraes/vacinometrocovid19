@@ -55,14 +55,7 @@ class Form extends Model
 
             $form->user_id = auth()->user()->id;
             // EXPORT
-            if($form['gender'] =='') $form->gender = null;
-            if($form['cpf'] =='') $form->cpf = null;
-            if($form['public_place'] == '') $form->public_place = null;
-            if($form['place_number'] == '') $form->place_number = null;
-            if($form['neighborhood'] == '') $form->neighborhood = null;
-            if($form['state'] == '') $form->state = null;
-            if($form['city'] == '') $form->city = null;
-            if($form['vaccinations_data'] == '') $form->vaccinations_data = null;
+
             if(isset($form['age'])) {
                 $form->age = $form['age'];
             }
@@ -91,6 +84,7 @@ class Form extends Model
                     $form->prioritygroup_id = $newprioritygroup->id;
                 }
             }
+            $form->vaccinated = 1;
             // EXPORT
         });
     }

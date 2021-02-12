@@ -33,10 +33,11 @@ class FormExport implements FromView, WithCustomCsvSettings
 
     public function view(): View
     {
+
         if($this->time == null) {
-            $immunizeds = Form::all();
+            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();;
         } else {
-            $immunizeds = Form::whereBetween('created_at', [$this->time, now()])->get();
+            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->whereBetween('created_at', [$this->time, now()])->get();
         }
         return view('import')->with('immunizeds', $immunizeds);
     }

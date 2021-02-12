@@ -167,6 +167,7 @@ return [
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Canducci\Cep\Providers\CepServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +231,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Cep' => Canducci\Cep\Facades\Cep::class,
+        'Endereco' => Canducci\Cep\Facades\Endereco::class
     ],
 
 ];
