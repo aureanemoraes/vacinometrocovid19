@@ -37,7 +37,9 @@ class Form extends Model
         'city',
         'age',
         'user_id',
-        'created_at'
+        'created_at',
+        'zip_code',
+        'bedridden'
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate', 'created_at'];
@@ -52,8 +54,9 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
-
-            $form->user_id = auth()->user()->id;
+            if(isset(auth()->user)) {
+                $form->user_id = auth()->user()->id;
+            }
             // EXPORT
 
             if(isset($form['age'])) {
@@ -125,6 +128,10 @@ class Form extends Model
 
     public function vaccinations() {
         return $this->hasMany(Vaccination::class, 'form_id', 'id');
+    }
+
+    public function phones() {
+        return $this->hasMany(Phone::class);
     }
     /*
     |--------------------------------------------------------------------------

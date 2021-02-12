@@ -23,6 +23,8 @@ Route::get('/noaccess', function () {
 
 Route::post('/exportcsv', [\App\Http\Controllers\IndexController::class, 'export']);
 Route::get('/pre-cadastro', [\App\Http\Controllers\PreFormController::class, 'index']);
+Route::post('/pre-cadastro', [\App\Http\Controllers\PreFormController::class, 'store']);
+
 
 Route::post('/cep', function(Request $request){
     $zip_code = $request->input('zip_code');

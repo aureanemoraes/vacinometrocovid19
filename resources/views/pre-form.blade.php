@@ -7,7 +7,7 @@
 
 @section('main')
     <div class="container">
-        <form id="pre-form">
+        <form id="pre-form" action="/pre-cadastro" method="POST">
             @csrf
             <section>
                 <h4>Informações gerais</h4>
@@ -28,8 +28,18 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label for="gender">Sexo*</label>
+                            <label for="gender">Gênero*</label>
                             <select class="form-control" id="gender" name="gender" >
+                                <option value="" selected disable>Selecione...</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Homem transgênero">Homem transgênero</option>
+                                <option value="Mulher transgênero">Mulher transgênero</option>
+                                <option value="Homem transexual">Homem transexual</option>
+                                <option value="Cisgênero">Cisgênero</option>
+                                <option value="Não sei responder">Não sei responder</option>
+                                <option value="Prefiro não responder">Prefiro não responder</option>
+                                <option value="Outros">Outros</option>
                             </select>
                         </div>
                     </div>
@@ -45,10 +55,42 @@
                         <option value="Não" selected>Não</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Celular*</label>
-                    <input class="form-control" id="phone" name="phone" placeholder="Celular...">
+            </section>
+            <section>
+                <h4>Contato</h4>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="phone_1">Telefone principal*</label>
+                            <input class="form-control" id="phone_1" name="phone_1" placeholder="Celular...">
+                        </div>
+                    </div>
+                    <input type="hidden" id="type_phone_1" name="type_phone_1" value="Principal" >
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="person_1">Falar com</label>
+                            <input class="form-control" id="person_1" name="person_1" placeholder="Nome da pessoa...">
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="phone_2">Telefone para recado (opcional)</label>
+                            <input class="form-control" id="phone_2" name="phone_2" placeholder="Celular...">
+                        </div>
+                    </div>
+                    <input type="hidden" id="type_phone_2" name="type_phone_2" value="Recado" >
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="person_2">Falar com</label>
+                            <input class="form-control" id="person_2" name="person_2" placeholder="Nome da pessoa...">
+                        </div>
+                    </div>
+                </div>
+
             </section>
             <section>
                 <h4>Endereço</h4>
@@ -200,6 +242,8 @@
         jQuery(document).ready(function($){
             $("#cpf").mask("000.000.000-00");
             $("#zip_code").mask("00000-000");
+            $("#phone_1").mask("(00) 00000-0000");
+            $("#phone_2").mask("(00) 00000-0000");
 
             $("#search_address").click(function (e) {
                 e.preventDefault();
@@ -256,7 +300,7 @@
                 bedridden: {
                     required: true
                 },
-                phone: {
+                phone_1: {
                     required: true
                 },
                 public_place: {
@@ -284,6 +328,13 @@
             unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
+        });
+
+        $('#pre-form').submit(() => {
+            $('#cpf').unmask();
+            $('#zip_code').unmask();
+            $('#phone_1').unmask();
+            $('#phone_2').unmask();
         });
     </script>
 @endsection
