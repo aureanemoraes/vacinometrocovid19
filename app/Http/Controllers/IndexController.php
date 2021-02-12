@@ -15,7 +15,7 @@ class IndexController extends Controller
 
     public function index()
     {
-        $forms = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();
+        $forms = Form::select('id', 'name', 'age', 'birthdate', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();
 
         //dd($forms[0]);
         $vacinationplaces = VacinationPlace::withCount('forms')->get();
