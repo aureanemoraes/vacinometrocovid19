@@ -87,7 +87,7 @@ class Form extends Model
                     $form->prioritygroup_id = $newprioritygroup->id;
                 }
             }
-            $form->vaccinated = 1;
+          //  $form->vaccinated = 1;
             // EXPORT
         });
     }
@@ -187,6 +187,12 @@ class Form extends Model
 
     public function setNeighborhoodAttribute($value) {
         $this->attributes['neighborhood'] = ucfirst($value);
+    }
+
+    public function setBedriddenAttribute($value) {
+        if($value == 'Sim') {
+            $this->attributes['bedridden'] = true;
+        }
     }
 
 }

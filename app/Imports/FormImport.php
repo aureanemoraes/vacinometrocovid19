@@ -43,7 +43,8 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
                 'name' => trim($row['nome']),
                 'age' => trim($row['idade']),
                 'prioritygroup_id' => trim($row['grupo_prioritario']),
-                'vacinationplace_id' => trim($row['unidade_de_saude'])
+                'vacinationplace_id' => trim($row['unidade_de_saude']),
+                'vaccinated' => 1
             ]);
         }
     }

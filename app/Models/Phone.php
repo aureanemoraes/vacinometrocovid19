@@ -9,9 +9,11 @@ class Phone extends Model
 {
     use HasFactory;
 
+    protected $table = 'phones';
+
     protected $fillable = ['number', 'type', 'person', 'form_id'];
 
-    public function forms() {
+    public function form() {
         return $this->belongsTo(Form::class);
     }
 }
