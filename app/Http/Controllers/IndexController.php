@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Form;
 use App\Models\VacinationPlace;
 
+use GrahamCampbell\ResultType\Result;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Exports\FormExport;
@@ -15,16 +16,18 @@ class IndexController extends Controller
 
     public function index()
     {
-        $forms = Form::select('id', 'name', 'age', 'birthdate', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();
-
-        //dd($forms[0]);
-        $vacinationplaces = VacinationPlace::withCount('forms')->get();
-        //dd($vacinationplaces[]);
+        $last_form = Form::all()->last();
+        $vacinationplaces = Result::all();
+        // Cálculo total de imunizados
+        $counter = 0;
+        foreach($vacinationplaces as $vp) {
+            $counter += $vp->qtd;
+        }
 
         return view('vaccinated_index')
-            ->with('forms', $forms)
-            ->with('vacinationplaces', $vacinationplaces);
-        //return $forms;
+            ->with('last_form', $last_form)
+            ->with('vacinationplaces', $vacinationplaces)
+            ->with('counter', $counter);
     }
 
    public function export(Request $request) {

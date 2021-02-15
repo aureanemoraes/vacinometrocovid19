@@ -39,10 +39,12 @@ class Form extends Model
         'user_id',
         'created_at',
         'zip_code',
-        'bedridden'
+        'bedridden',
+        'vaccinated'
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate', 'created_at'];
+    protected $appends = ['age_formatted'];
 
 
     /*

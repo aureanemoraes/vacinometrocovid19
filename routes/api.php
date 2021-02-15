@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('vacinados', function () {
+    $forms = \App\Models\Form::with('vacinationplace:id,name', 'prioritygroup:id,name')->select('name','vacinationplace_id','prioritygroup_id','age')->get();
+    return $forms;
+});
