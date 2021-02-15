@@ -28,6 +28,10 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
 
     public function model(array $row)
     {
+        if(!isset($row['nome'])){
+            return null;
+        }
+
         $prioritygroup = trim($row['grupo_prioritario']);
         $vaccinationplace = trim($row['unidade_de_saude']);
         $exists = Form::whereHas('prioritygroup', function( $query) use($prioritygroup){

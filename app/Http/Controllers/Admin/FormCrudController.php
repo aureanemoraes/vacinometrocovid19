@@ -12,6 +12,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Spatie\Async\Pool;
+
 
 /**
  * Class FormCrudController
@@ -264,9 +266,28 @@ class FormCrudController extends CrudController
 
     public function import(Request $request)
     {
-        if($request->hasFile('file')) {
-            (new FormImport)->import($request->file('file'));
-        }
+
+        $pool = Pool::create();
+
+        $pool->add(function () use ($request) {
+            if($request->hasFile('file')) {
+                (new FormImport)->import($request->file('file'));
+            }
+        })->then(function ($output) {
+            $vacinationplaces = VacinationPlace::withCount('forms')->get();
+            //dd($vacinationplaces);
+
+            foreach ($vacinationplaces as $vacinationplace) {
+                $grava = ['name' => $vacinationplace->name, 'qtd' => $vacinationplace->forms_count];
+                // dd($grava);
+
+                \App\Models\Result::create($grava);
+            }
+        });
+
+        $pool->wait();
+
+
         return redirect()->route('form.index');
     }
 }

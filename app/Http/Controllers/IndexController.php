@@ -17,7 +17,7 @@ class IndexController extends Controller
     public function index()
     {
         $last_form = Form::all()->last();
-        $vacinationplaces = Result::all();
+        $vacinationplaces = \App\Models\Result::all();
         // Cálculo total de imunizados
         $counter = 0;
         foreach($vacinationplaces as $vp) {
