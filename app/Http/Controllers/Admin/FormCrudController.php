@@ -278,10 +278,13 @@ class FormCrudController extends CrudController
             //dd($vacinationplaces);
 
             foreach ($vacinationplaces as $vacinationplace) {
-                $grava = ['name' => $vacinationplace->name, 'qtd' => $vacinationplace->forms_count];
-                // dd($grava);
 
-                \App\Models\Result::create($grava);
+                \App\Models\Result::updateOrCreate(
+                    ['name' => $vacinationplace->name],
+                    ['qtd' => $vacinationplace->forms_count]
+                );
+
+
             }
         });
 

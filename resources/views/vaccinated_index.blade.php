@@ -42,16 +42,50 @@
                     </div>
                 </div>
             </div>
+            {{--
+            <div class="card">
+                <div class="card-header"><h4>Lista de locais de vacinação</h4></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table display" id="vp_table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Qtd. imunizados</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
             <div class="card">
+                <div class="card-header"><h4>Lista de grupos prioritários</h4></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table display" id="gp_table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Qtd. imunizados</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            --}}
+            <div class="card">
                 <div class="card-header"><h4>Lista de vacinados</h4></div>
-
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table display" id="index_table">
                             <thead>
                             <tr>
-
                                 <th scope="col">Nome</th>
                                 <th scope="col">Idade</th>
                                 <th scope="col">Lugar de vacinação</th>
@@ -59,11 +93,8 @@
                             </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
-
-
                     </div>
                 </div>
             </div>
