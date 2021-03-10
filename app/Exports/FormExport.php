@@ -15,11 +15,11 @@ class FormExport implements FromView, WithCustomCsvSettings
 {
     use Exportable;
 
-    public function __construct($time, $delimiter = ',')
+    public function __construct($time, $delimiter = ',', $dose)
     {
         $this->time = $time;
         $this->delimiter = $delimiter;
-
+        $this->dose = $dose;
     }
 
 
@@ -35,9 +35,14 @@ class FormExport implements FromView, WithCustomCsvSettings
     {
 
         if($this->time == null) {
-            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->get();;
+            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at', 'dose')
+                ->where('vaccinated', 1)
+                ->where('dose', $this->dose)->get();;
         } else {
-            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at')->where('vaccinated', 1)->whereBetween('created_at', [$this->time, now()])->get();
+            $immunizeds = Form::select('id', 'name', 'age', 'vacinationplace_id', 'prioritygroup_id', 'created_at', 'dose')
+                ->where('vaccinated', 1)
+                ->where('dose', $this->dose)
+                ->whereBetween('created_at', [$this->time, now()])->get();
         }
         return view('import')->with('immunizeds', $immunizeds);
     }

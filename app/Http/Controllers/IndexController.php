@@ -17,21 +17,31 @@ class IndexController extends Controller
     public function index()
     {
         $last_form = Form::all()->last();
-        $vacinationplaces = \App\Models\Result::all();
+        $vacinationplaces = \App\Models\Result::orderBy('name', 'asc')->get();
         // Cálculo total de imunizados
         $counter = 0;
         foreach($vacinationplaces as $vp) {
             $counter += $vp->qtd;
         }
+        $counter_2 = 0;
+        foreach($vacinationplaces as $vp) {
+            $counter_2 += $vp->qtd_2;
+        }
+
+        $prioritygroups = \App\Models\ResultPg::orderBy('name', 'asc')->get();
 
         return view('vaccinated_index')
             ->with('last_form', $last_form)
             ->with('vacinationplaces', $vacinationplaces)
-            ->with('counter', $counter);
+            ->with('prioritygroups', $prioritygroups)
+            ->with('counter', $counter)
+            ->with('counter_2', $counter_2);
+
     }
 
    public function export(Request $request) {
        $time = $request->input('time');
+       $dose = $request->dose;
        $export_type = $request->input('export_type');
        switch($time) {
            case 'one_day':
@@ -49,13 +59,13 @@ class IndexController extends Controller
        }
        switch($export_type) {
            case 'csv_virgula':
-               return (new FormExport($time, ','))->download('vacinometrocovid19_'. now() .'.csv');
+               return (new FormExport($time, ',', $dose))->download('vacinometrocovid19_'. now() .'.csv');
                break;
            case 'csv_ponto_virgula':
-               return (new FormExport($time, ';'))->download('vacinometrocovid19_'. now() .'.csv');
+               return (new FormExport($time, ';', $dose))->download('vacinometrocovid19_'. now() .'.csv');
                break;
            case 'xlsx':
-               return (new FormExport($time))->download('vacinometrocovid19_'. now() .'.xlsx');
+               return (new FormExport($time, '', $dose))->download('vacinometrocovid19_'. now() .'.xlsx');
                break;
                /*
            case 'pdf':

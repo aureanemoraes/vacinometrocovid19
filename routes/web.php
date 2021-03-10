@@ -17,6 +17,14 @@ use Illuminate\Http\Request;
 
 Route::get('/', [\App\Http\Controllers\IndexController::class, 'index']);
 
+Route::get('/vacinados/primeira-dose', function() {
+    return view('first_dose');
+});
+
+Route::get('/vacinados/segunda-dose', function() {
+    return view('second_dose');
+});
+
 Route::get('/noaccess', function () {
     return view('no_access');
 });

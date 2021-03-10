@@ -67,11 +67,14 @@ class VaccinationCrudController extends CrudController
     {
         $form_id = request()->query('form_id');
         $immunized = Form::find($form_id);
-        $current_user_id = backpack_user()->id;
+        $current_user = backpack_user();
         //dd($immunized);
-        if(isset($immunized) && !($immunized->user_id == $current_user_id)) {
-            $this->crud->denyAccess('create');
+        if(!$current_user->hasRole('admin')) {
+            if(isset($immunized) && !($immunized->user_id == $current_user->id)) {
+                $this->crud->denyAccess('create');
+            }
         }
+
 
         CRUD::setValidation(VaccinationRequest::class);
         $this->crud->addSaveAction([

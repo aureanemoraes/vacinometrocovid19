@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\FormExport;
 use App\Imports\FormImport;
 use App\Http\Requests\FormRequest;
+use App\Models\PriorityGroup;
 use App\Models\VacinationPlace;
 use App\Models\HealthProfessional;
 
@@ -240,6 +241,8 @@ class FormCrudController extends CrudController
             ],
         ]);
 
+        CRUD::addField(['name' => 'dose', 'type' => 'select2_from_array', 'label' => 'Dose', 'options' => [0 => '1ª', 2 => '2ª']]);
+
     }
 
     protected function setupUpdateOperation()
@@ -266,7 +269,7 @@ class FormCrudController extends CrudController
 
     public function import(Request $request)
     {
-
+/*
         $pool = Pool::create();
 
         $pool->add(function () use ($request) {
@@ -274,22 +277,64 @@ class FormCrudController extends CrudController
                 (new FormImport)->import($request->file('file'));
             }
         })->then(function ($output) {
-            $vacinationplaces = VacinationPlace::withCount('forms')->get();
-            //dd($vacinationplaces);
+            // LOCAL DE VACINAÇÃO !START!
+            // Primeira dose
+            $vacinationplaces_1 = VacinationPlace::withCount(['forms' => function (Builder $query) {
+                $query->where('dose', 0);
+            }])->get();
 
-            foreach ($vacinationplaces as $vacinationplace) {
-
+            foreach ($vacinationplaces_1 as $vacinationplace) {
                 \App\Models\Result::updateOrCreate(
-                    ['name' => $vacinationplace->name],
+                    ['name' => $vacinationplace->name, 'dose' => 0],
                     ['qtd' => $vacinationplace->forms_count]
                 );
-
-
             }
+            // Segunda dose
+            $vacinationplaces_2 = VacinationPlace::withCount(['forms' => function (Builder $query) {
+                $query->where('dose', 2);
+            }])->get();
+
+            foreach ($vacinationplaces_2 as $vacinationplace) {
+                \App\Models\Result::updateOrCreate(
+                    ['name' => $vacinationplace->name, 'dose' => 2],
+                    ['qtd' => $vacinationplace->forms_count]
+                );
+            }
+            // LOCAL DE VACINAÇÃO !END!
+
+            // GRUPO PRIORITÁRIO !START!
+            // Primeira dose
+            $priority_group_1 = PriorityGroup::withCount(['forms' => function (Builder $query) {
+                $query->where('dose', 0);
+            }])->get();
+
+            foreach ($priority_group_1 as $priority_group) {
+                \App\Models\Result::updateOrCreate(
+                    ['name' => $priority_group->name, 'dose' => 0],
+                    ['qtd' => $priority_group->forms_count]
+                );
+            }
+            // Segunda dose
+            $priority_group_2 = PriorityGroup::withCount(['forms' => function (Builder $query) {
+                $query->where('dose', 2);
+            }])->get();
+
+            foreach ($priority_group_2 as $priority_group) {
+                \App\Models\Result::updateOrCreate(
+                    ['name' => $priority_group->name, 'dose' => 2],
+                    ['qtd' => $priority_group->forms_count]
+                );
+            }
+            // GRUPO PRIORITÁRIO !END!
+
         });
 
         $pool->wait();
 
+*/
+        if($request->hasFile('file')) {
+            (new FormImport)->import($request->file('file'));
+        }
 
         return redirect()->route('form.index');
     }

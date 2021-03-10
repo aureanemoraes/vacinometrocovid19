@@ -40,7 +40,8 @@ class Form extends Model
         'created_at',
         'zip_code',
         'bedridden',
-        'vaccinated'
+        'vaccinated',
+        'dose'
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate', 'created_at'];
@@ -91,6 +92,58 @@ class Form extends Model
             }
           //  $form->vaccinated = 1;
             // EXPORT
+        });
+        static::created(function ($form) {
+            $result = Result::where('name', $form->vacinationplace->name)->first();
+
+            if($form->dose == 0) {
+                if(isset($result)) {
+                    $result->qtd++;
+                    $result->save();
+                } else {
+                    Result::create([
+                        'name' => $form->vacinationplace->name,
+                        'qtd' => 1,
+                        'qtd_2' => 0
+                    ]);
+                }
+            } else if($form->dose == 2) {
+                if(isset($result)) {
+                    $result->qtd_2++;
+                    $result->save();
+                } else {
+                    Result::create([
+                        'name' => $form->vacinationplace->name,
+                        'qtd' => 0,
+                        'qtd_2' => 1
+                    ]);
+                }
+            }
+
+            $result_pg = ResultPg::where('name', $form->prioritygroup->name)->first();
+            if($form->dose == 0) {
+                if(isset($result_pg)) {
+                    $result_pg->qtd++;
+                    $result_pg->save();
+                } else {
+                    ResultPg::create([
+                        'name' => $form->prioritygroup->name,
+                        'qtd' => 1,
+                        'qtd_2' => 0
+                    ]);
+                }
+            } else if($form->dose == 2) {
+                if(isset($result_pg)) {
+                    $result_pg->qtd_2++;
+                    $result_pg->save();
+                } else {
+                    ResultPg::create([
+                        'name' => $form->prioritygroup->name,
+                        'qtd_2' => 1,
+                        'qtd' => 0
+                    ]);
+                }
+            }
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Form;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -38,18 +39,31 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
             $query->where('name', '=', $prioritygroup);
         })->whereHas('vacinationplace', function ( $query) use($vaccinationplace) {
             $query->where('name', '=', $vaccinationplace);
-        })->where('name', trim($row['nome']))->where('age', trim($row['idade']))->first();
+        })->where('name', trim($row['nome']))->where('age', trim($row['idade']))->where('dose', trim($row['dose']))->first();
        // dd($exists);
         if(isset($exists)) {
             return null;
         } else {
-            return new Form([
-                'name' => trim($row['nome']),
-                'age' => trim($row['idade']),
-                'prioritygroup_id' => trim($row['grupo_prioritario']),
-                'vacinationplace_id' => trim($row['unidade_de_saude']),
-                'vaccinated' => 1
-            ]);
+            if(isset($row['criado_em'])) {
+                return new Form([
+                    'name' => trim($row['nome']),
+                    'age' => trim($row['idade']),
+                    'prioritygroup_id' => trim($row['grupo_prioritario']),
+                    'vacinationplace_id' => trim($row['unidade_de_saude']),
+                    'vaccinated' => 1,
+                    'dose' => trim($row['dose']),
+                    'created_at' => Carbon::parse($row['criado_em'])
+                ]);
+            } else {
+                return new Form([
+                    'name' => trim($row['nome']),
+                    'age' => trim($row['idade']),
+                    'prioritygroup_id' => trim($row['grupo_prioritario']),
+                    'vacinationplace_id' => trim($row['unidade_de_saude']),
+                    'vaccinated' => 1,
+                    'dose' => trim($row['dose'])
+                ]);
+            }
         }
     }
 }

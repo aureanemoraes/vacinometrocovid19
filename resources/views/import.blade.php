@@ -19,6 +19,7 @@
         <th>idade</th>
         <th>lugar_vacinacao</th>
         <th>grupo_prioritario</th>
+        <th>dose</th>
         <th>criado_em</th>
     </tr>
     </thead>
@@ -30,6 +31,7 @@
             <td>{{ $immunized->age_formatted }}</td>
             <td>{{ $immunized->vacinationplace->name }}</td>
             <td>{{ $immunized->prioritygroup->name }}</td>
+            <td>{{ ($immunized->dose == 0) ? '1' : '2' }}</td>
             <td>{{ $immunized->created_at }}</td>
         </tr>
     @endforeach
