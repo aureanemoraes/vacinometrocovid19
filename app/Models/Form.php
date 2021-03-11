@@ -27,8 +27,6 @@ class Form extends Model
         'name',
         'cpf',
         'birthdate',
-        'vacinationplace_id',
-        'prioritygroup_id',
         'gender',
         'public_place',
         'place_number',
@@ -41,7 +39,11 @@ class Form extends Model
         'zip_code',
         'bedridden',
         'vaccinated',
-        'dose'
+        'dose',
+        'vacination_place',
+        'priority_group',
+        'prioritygroup_id',
+        'vacinationplace_id'
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate', 'created_at'];
@@ -66,32 +68,35 @@ class Form extends Model
                 $form->age = $form['age'];
             }
 
-            $vacinationplace = VacinationPlace::where('name', $form['vacinationplace_id'])->first();
-            if(isset($vacinationplace->id)) {
-                $form->vacinationplace_id = $vacinationplace->id;
-            } else {
-                //dd($form['vacinationplace_id']);
-                if(isset($form['vacinationplace_id'])) {
-                    $newvacinationplace = VacinationPlace::create([
-                        'name' => $form['vacinationplace_id']
-                    ]);
-                    $form->vacinationplace_id = $newvacinationplace->id;
+            if(isset($form['vacination_place'])) {
+                $vacinationplace = VacinationPlace::where('name', $form['vacination_place'])->first();
+                if(isset($vacinationplace->id)) {
+                    $form->vacination_place = $vacinationplace->id;
+                } else {
+                    //dd($form['vacination_place']);
+                    if(isset($form['vacination_place'])) {
+                        $newvacinationplace = VacinationPlace::create([
+                            'name' => $form['vacination_place']
+                        ]);
+                        $form->vacinationplace_id = $newvacinationplace->id;
+                    }
                 }
             }
 
-            $prioritygroup = Prioritygroup::where('name', $form['prioritygroup_id'])->first();
-            if(isset($prioritygroup->id)) {
-                $form->prioritygroup_id = $prioritygroup->id;
-            } else {
-                if(isset($form['prioritygroup_id'])) {
-                    $newprioritygroup = Prioritygroup::create([
-                        'name' => $form['prioritygroup_id']
-                    ]);
-                    $form->prioritygroup_id = $newprioritygroup->id;
+            if(isset($form['priority_group'])) {
+                $prioritygroup = PriorityGroup::where('name', $form['priority_group'])->first();
+                if(isset($prioritygroup->id)) {
+                    $form->priority_group = $prioritygroup->id;
+                } else {
+                    if(isset($form['priority_group'])) {
+                        $newprioritygroup = PriorityGroup::create([
+                            'name' => $form['priority_group']
+                        ]);
+                        $form->prioritygroup_id = $newprioritygroup->id;
+                    }
                 }
             }
-          //  $form->vaccinated = 1;
-            // EXPORT
+
         });
         static::created(function ($form) {
             $result = Result::where('name', $form->vacinationplace->name)->first();

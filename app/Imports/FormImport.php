@@ -48,8 +48,8 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
                 return new Form([
                     'name' => trim($row['nome']),
                     'age' => trim($row['idade']),
-                    'prioritygroup_id' => trim($row['grupo_prioritario']),
-                    'vacinationplace_id' => trim($row['unidade_de_saude']),
+                    'priority_group' => trim($row['grupo_prioritario']),
+                    'vacination_place' => trim($row['unidade_de_saude']),
                     'vaccinated' => 1,
                     'dose' => trim($row['dose']),
                     'created_at' => Carbon::parse($row['criado_em'])
@@ -58,8 +58,8 @@ class FormImport implements ToModel, WithHeadingRow, WithCustomCsvSettings
                 return new Form([
                     'name' => trim($row['nome']),
                     'age' => trim($row['idade']),
-                    'prioritygroup_id' => trim($row['grupo_prioritario']),
-                    'vacinationplace_id' => trim($row['unidade_de_saude']),
+                    'priority_group' => trim($row['grupo_prioritario']),
+                    'vacination_place' => trim($row['unidade_de_saude']),
                     'vaccinated' => 1,
                     'dose' => trim($row['dose'])
                 ]);
