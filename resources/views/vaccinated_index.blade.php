@@ -36,7 +36,7 @@
 @endsection
 
 @section('main')
-    @if(isset($vacinationplaces) && $counter > 0)
+    @if(isset($vacinationplaces) && ($counter > 0 || $counter_2 > 0))
         <div class="container ">
             <h1>Vacinômetro COVID19</h1>
 
@@ -92,7 +92,7 @@
                             </tr>
                             </thead>
                             @foreach($vacinationplaces as $vacinationplace)
-                                @if($vacinationplace->qtd > 0)
+                                @if(($vacinationplace->qtd > 0 || $vacinationplace->qtd_2 > 0))
                                     <tbody>
                                     <tr>
                                         <td>{{$vacinationplace->name}}</td>
@@ -124,7 +124,7 @@
                             </tr>
                             </thead>
                             @foreach($prioritygroups as $prioritygroup)
-                                @if($prioritygroup->qtd > 0)
+                                @if(($prioritygroup->qtd > 0 || $prioritygroup->qtd_2 > 0))
                                     <tbody>
                                     <tr>
                                         <td>{{$prioritygroup->name}}</td>

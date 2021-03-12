@@ -150,6 +150,94 @@ class Form extends Model
                 }
             }
         });
+        static::deleted(function ($form) {
+            $result = Result::where('name', $form->vacinationplace->name)->first();
+            if($form->dose == 0) {
+                $result->qtd--;
+            } else {
+                $result->qtd_2--;
+            }
+            $result->save();
+
+            $result_pg = ResultPg::where('name', $form->prioritygroup->name)->first();
+            if($form->dose == 0) {
+                $result_pg->qtd--;
+            } else {
+                $result_pg->qtd_2--;
+            }
+            $result_pg->save();
+        });
+        static::updating(function ($form) {
+            if($form->getOriginal('vacinationplace_id') !== $form->vacinationplace_id) {
+                $vacinationplace = VacinationPlace::find($form->getOriginal('vacinationplace_id'));
+
+                $result = Result::where('name', $vacinationplace->name)->first();
+                $new_result = Result::where('name', $form->vacinationplace->name)->first();
+
+                if (isset($new_result)) {
+                    if($form->dose == 0) {
+                        $result->qtd--;
+                        $new_result->qtd++;
+                    } else {
+                        $result->qtd_2--;
+                        $new_result->qtd_2++;
+                    }
+                    $new_result->save();
+                } else {
+                    if($form->dose == 0) {
+                        $result->qtd--;
+                        Result::create([
+                            'name' => $form->vacinationplace->name,
+                            'qtd' => 1,
+                            'qtd_2' => 0
+                        ]);
+                    } else if($form->dose == 2) {
+                        $result->qtd_2--;
+                        Result::create([
+                            'name' => $form->vacinationplace->name,
+                            'qtd' => 0,
+                            'qtd_2' => 1
+                        ]);
+                    }
+                }
+                $result->save();
+            }
+
+            if($form->getOriginal('prioritygroup_id') !== $form->prioritygroup_id) {
+                $prioritygroup = PriorityGroup::find($form->getOriginal('prioritygroup_id'));
+                $result_pg = ResultPg::where('name', $prioritygroup->name)->first();
+                $new_result_pg = ResultPg::where('name', $form->prioritygroup->name)->first();
+
+                if(isset($new_result_pg)) {
+                    if($form->dose == 0) {
+                        $result_pg->qtd--;
+                        $new_result_pg->qtd++;
+                    } else {
+                        $result_pg->qtd_2--;
+                        $new_result_pg->qtd_2++;
+                    }
+                    $new_result_pg->save();
+                } else {
+                    if($form->dose == 0) {
+                        $result_pg->qtd--;
+                        ResultPg::create([
+                            'name' => $form->prioritygroup->name,
+                            'qtd' => 1,
+                            'qtd_2' => 0
+                        ]);
+                    } else if($form->dose == 2) {
+                        $result_pg->qtd_2--;
+                        ResultPg::create([
+                            'name' => $form->prioritygroup->name,
+                            'qtd_2' => 1,
+                            'qtd' => 0
+                        ]);
+                    }
+                }
+                $result_pg->save();
+            }
+        });
+
     }
 
     public function getVaccinationsInfo() {
