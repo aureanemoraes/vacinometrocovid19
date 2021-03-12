@@ -47,7 +47,7 @@ class Form extends Model
     ];
     // protected $hidden = [];
     protected $dates = ['birthdate', 'created_at'];
-    protected $appends = ['age_formatted'];
+    protected $appends = ['age_formatted', 'name_formatted'];
 
 
     /*
@@ -59,8 +59,9 @@ class Form extends Model
     protected static function booted()
     {
         static::creating(function ($form) {
-            if(isset(auth()->user)) {
-                $form->user_id = auth()->user()->id;
+            $user = auth()->user();
+            if(isset($user)) {
+                $form->user_id = $user->id;
             }
             // EXPORT
 

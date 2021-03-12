@@ -94,7 +94,7 @@
 
                 },
                 "columns": [
-                    {"data": "name"},
+                    {"data": "name_formatted"},
                     {'data': 'age_formatted'},
                     {'data': 'vacinationplace.name'},
                     {'data': 'prioritygroup.name'}
